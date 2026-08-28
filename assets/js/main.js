@@ -525,3 +525,67 @@
     .then((data) => applyData(data))
     .catch(() => fallbackDirect());
 })();
+
+/* ========================================================
+   v2 视觉增强：滚动进度条 / 光标光晕 / 3D 倾斜卡片
+   与上面原有逻辑解耦，失败互不影响；均尊重减少动效偏好
+   ======================================================== */
+(function () {
+  "use strict";
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  /* ---------- 滚动进度条 ---------- */
+  const pbar = document.getElementById("scroll-progress");
+  if (pbar) {
+    let pticking = false;
+    const update = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      pbar.style.transform = "scaleX(" + (max > 0 ? window.scrollY / max : 0) + ")";
+      pticking = false;
+    };
+    window.addEventListener("scroll", () => {
+      if (pticking) return;
+      pticking = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  }
+
+  /* ---------- 光标光晕（仅精细指针设备） ---------- */
+  const glow = document.getElementById("cursor-glow");
+  if (glow && finePointer && !reduceMotion) {
+    let tx = -800, ty = -800, cx = -800, cy = -800, raf = null;
+    const loop = () => {
+      cx += (tx - cx) * 0.1;
+      cy += (ty - cy) * 0.1;
+      glow.style.transform = "translate(" + (cx - 310) + "px," + (cy - 310) + "px)";
+      raf = null;
+    };
+    const move = (e) => {
+      if (!glow.classList.contains("on")) glow.classList.add("on");
+      tx = e.clientX; ty = e.clientY;
+      if (!raf) raf = requestAnimationFrame(loop);
+    };
+    window.addEventListener("mousemove", move, { passive: true });
+  }
+
+  /* ---------- 3D 倾斜卡片（仅精细指针设备） ---------- */
+  if (finePointer && !reduceMotion) {
+    const cards = document.querySelectorAll(".tilt");
+    cards.forEach((card) => {
+      const R = 5;
+      card.addEventListener("mousemove", (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform =
+          "perspective(900px) rotateY(" + (px * R).toFixed(2) + "deg) rotateX(" + (-py * R).toFixed(2) + "deg) translateY(-3px)";
+      });
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "";
+      });
+    });
+  }
+})();

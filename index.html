@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>zsl99a · 前端 / 全栈工程师 · Rust 高频交易系统构建者</title>
   <meta name="description" content="zsl99a的个人主页：12 年全栈开发经验，React/Vue/TypeScript 前端架构，Rust(Axum/Tokio) 高并发与微秒级高频交易系统，AI 辅助编程践行者。" />
-  <meta name="keywords" content="zsl99a, 个人主页, 前端工程师, 全栈工程师, React, Vue, TypeScript, Rust, Axum, Tokio, 高频交易, 量化交易, WebSocket, PostgreSQL, Sentry 前端监控, Google Analytics, 埋点, 性能优化, 老旧系统重构, AI 编程" />
+  <meta name="keywords" content="zsl99a, 个人主页, 前端工程师, 全栈工程师, React, Vue, TypeScript, NestJS, Express, Node.js, Rust, Axum, Tokio, 高频交易, 量化交易, WebSocket, PostgreSQL, Sentry 前端监控, Google Analytics, 埋点, 性能优化, 老旧系统重构, AI 编程" />
   <meta name="author" content="zsl99a" />
   <meta property="og:title" content="zsl99a · 前端 / 全栈工程师" />
   <meta property="og:description" content="12 年全栈经验 · Rust 高频交易系统 · AI 辅助编程" />
@@ -14,154 +14,320 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="zsl99a · 前端 / 全栈工程师" />
   <meta name="twitter:description" content="12 年全栈经验 · Rust 高频交易系统 · AI 辅助编程" />
-  <meta name="theme-color" content="#0a0e17" />
+  <meta name="theme-color" content="#05070d" />
   <link rel="canonical" href="https://zsl99a.github.io/" />
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
+  <!-- 顶部滚动进度条 -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <!-- 光标跟随光晕（触屏设备自动隐藏） -->
+  <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+
   <a class="skip-link" href="#about">跳过导航，直达内容</a>
-  <!-- 背景粒子画布 -->
+
+  <!-- 背景层：粒子画布 + 极光光斑 + 科技网格 -->
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="bg-scene" aria-hidden="true">
+    <div class="aurora a1"></div>
+    <div class="aurora a2"></div>
+    <div class="aurora a3"></div>
+    <div class="bg-grid"></div>
+  </div>
 
   <!-- 顶部导航 -->
   <header class="nav" id="nav">
     <div class="nav-inner">
       <a href="#home" class="nav-logo">
-        <span class="logo-mark">&lt;/&gt;</span><span>zsl99a</span>
+        <span class="logo-mark">&lt;/&gt;</span>
+        <span class="logo-txt">zsl99a</span>
+        <span class="logo-dot">_</span>
       </a>
-      <nav class="nav-links" id="nav-links">
+      <nav class="nav-links" id="nav-links" aria-label="主导航">
         <a href="#about" class="nav-link">关于</a>
         <a href="#skills" class="nav-link">技能</a>
         <a href="#experience" class="nav-link">经历</a>
         <a href="#projects" class="nav-link">项目</a>
         <a href="#github" class="nav-link">GitHub</a>
         <a href="#contact" class="nav-link">联系</a>
+        <a href="mailto:zsl99a@live.com" class="nav-cta">hire me →</a>
       </nav>
-      <button class="nav-toggle" id="nav-toggle" aria-label="菜单">
+      <button class="nav-toggle" id="nav-toggle" aria-label="菜单" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
   <main>
-    <!-- HERO -->
+    <!-- ================= HERO ================= -->
     <section class="hero" id="home">
-      <div class="hero-inner">
-        <div class="hero-status reveal">
-          <span class="dot"></span> 欢迎合作洽谈
+      <div class="hero-watermark" aria-hidden="true">HFT</div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <div class="hero-badge">
+            <span class="dot"></span>
+            <span class="badge-txt">行情引擎在线 · 开放合作</span>
+          </div>
+          <h1 class="hero-h1">
+            <span class="hero-name grad">zsl99a</span>
+            <span class="hero-title">前端 / 全栈工程师</span>
+          </h1>
+          <p class="hero-sub">近几年在写 <span class="accent">Rust 高频交易系统</span> —— 行情聚合、本地订单簿、多策略引擎与风控全链路，7×24 在线运行</p>
+          <p class="hero-typed"><span id="typed"></span><span class="caret">▌</span></p>
+          <div class="hero-tags">
+            <span class="tag"><span class="tag-dot d1"></span>Rust 高频交易</span>
+            <span class="tag"><span class="tag-dot d2"></span>React / Vue</span>
+            <span class="tag"><span class="tag-dot d3"></span>独立开发者</span>
+            <span class="tag"><span class="tag-dot d4"></span>AI 辅助编程</span>
+          </div>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary">查看项目 <span class="btn-arrow">→</span></a>
+            <a href="#contact" class="btn btn-ghost">联系我</a>
+          </div>
+          <div class="hero-social">
+            <a class="hs-link" href="https://github.com/zsl99a" target="_blank" rel="noopener">
+              <span class="hs-ico">GitHub</span><span class="hs-txt">github.com/zsl99a</span>
+            </a>
+            <i class="hs-sep"></i>
+            <a class="hs-link" href="mailto:zsl99a@live.com">
+              <span class="hs-ico">Email</span><span class="hs-txt">zsl99a@live.com</span>
+            </a>
+            <i class="hs-sep"></i>
+            <a class="hs-link" href="#contact">
+              <span class="hs-ico">WeChat</span><span class="hs-txt">zsl99a</span>
+            </a>
+          </div>
         </div>
-        <h1 class="hero-name reveal">
-          <span class="grad">zsl99a</span>
-        </h1>
-        <p class="hero-role reveal">
-          前端 / 全栈工程师，近几年在写 <span class="accent">Rust 高频交易系统</span>
-        </p>
-        <p class="hero-typed reveal">
-          <span id="typed"></span><span class="caret">|</span>
-        </p>
-        <div class="hero-tags reveal">
-          <span class="tag">Rust 高频交易</span>
-          <span class="tag">React / Vue</span>
-          <span class="tag">独立开发者</span>
-        </div>
-        <div class="hero-cta reveal">
-          <a href="#projects" class="btn btn-primary">查看项目</a>
-          <a href="#contact" class="btn btn-ghost">联系我</a>
-        </div>
-        <div class="hero-social reveal">
-          <a href="https://github.com/zsl99a" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
-          <a href="mailto:zsl99a@live.com" aria-label="Email">Email</a>
-          <a href="#contact" aria-label="WeChat">WeChat</a>
+
+        <!-- 终端窗口（HFT 引擎实时演示） -->
+        <div class="hero-stage" aria-hidden="true">
+          <div class="terminal">
+            <div class="term-bar">
+              <span class="term-dots"><i></i><i></i><i></i></span>
+              <span class="term-title">hft-engine · cargo run</span>
+              <span class="term-status">● 7×24</span>
+            </div>
+            <div class="term-body">
+              <div class="t-line t-dim">$ cargo run --release --bin hft-engine</div>
+              <div class="t-line t-dim">▸ Compiling hft-engine v0.4.2 ...</div>
+              <div class="t-line"><span class="t-ok">●</span> ws::gateway&nbsp;&nbsp;&nbsp;&nbsp;usdjpy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected&nbsp;&nbsp;<span class="t-v">0.31ms</span></div>
+              <div class="t-line"><span class="t-ok">●</span> lob::build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;depth=200&nbsp;&nbsp;snapshots&nbsp;&nbsp;<span class="t-v">12,408/s</span></div>
+              <div class="t-line"><span class="t-ok">●</span> strategy::mm&nbsp;&nbsp;active&nbsp;&nbsp;&nbsp;&nbsp;pnl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-up">+$1,284.55</span></div>
+              <div class="t-line"><span class="t-ok">●</span> risk::guard&nbsp;&nbsp;&nbsp;ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drawdown&nbsp;&nbsp;<span class="t-v">0.42%</span></div>
+              <div class="t-line"><span class="t-amber">○</span> order::fill&nbsp;&nbsp;&nbsp;9c2e1f&nbsp;&nbsp;&nbsp;&nbsp;qty 1.00&nbsp;&nbsp;<span class="t-amber">@151.204</span></div>
+              <div class="t-line"><span class="t-ok">●</span> engine::loop&nbsp;&nbsp;running&nbsp;&nbsp;&nbsp;&nbsp;uptime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-ok">7×24h</span></div>
+              <div class="t-line t-cmd"><span class="t-prompt">❯</span><span class="t-caret"></span></div>
+            </div>
+          </div>
+          <div class="stage-glow"></div>
         </div>
       </div>
-      <a href="#about" class="scroll-hint" aria-label="向下滚动">↓</a>
+
+      <div class="scroll-hint" aria-hidden="true">
+        <span class="sh-txt">SCROLL</span>
+        <span class="sh-line"></span>
+      </div>
     </section>
 
-    <!-- ABOUT -->
+    <!-- ================= MARQUEE ================= -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-group">
+        <span class="m-item">Rust</span><i class="m-sep">✦</i>
+        <span class="m-item">Axum</span><i class="m-sep">✦</i>
+        <span class="m-item">Tokio</span><i class="m-sep">✦</i>
+        <span class="m-item">React</span><i class="m-sep">✦</i>
+        <span class="m-item">Vue</span><i class="m-sep">✦</i>
+        <span class="m-item">TypeScript</span><i class="m-sep">✦</i>
+        <span class="m-item">NestJS</span><i class="m-sep">✦</i>
+        <span class="m-item">Express</span><i class="m-sep">✦</i>
+        <span class="m-item">WebSocket</span><i class="m-sep">✦</i>
+        <span class="m-item">高频交易</span><i class="m-sep">✦</i>
+        <span class="m-item">PostgreSQL</span><i class="m-sep">✦</i>
+        <span class="m-item">低延迟架构</span><i class="m-sep">✦</i>
+        <span class="m-item">AI 辅助编程</span><i class="m-sep">✦</i>
+        <span class="m-item">系统重构</span><i class="m-sep">✦</i>
+        <span class="m-item">Node.js</span><i class="m-sep">✦</i>
+        <span class="m-item">Docker</span><i class="m-sep">✦</i>
+        <span class="m-item">RxJS</span><i class="m-sep">✦</i>
+      </div>
+      <div class="marquee-group" aria-hidden="true">
+        <span class="m-item">Rust</span><i class="m-sep">✦</i>
+        <span class="m-item">Axum</span><i class="m-sep">✦</i>
+        <span class="m-item">Tokio</span><i class="m-sep">✦</i>
+        <span class="m-item">React</span><i class="m-sep">✦</i>
+        <span class="m-item">Vue</span><i class="m-sep">✦</i>
+        <span class="m-item">TypeScript</span><i class="m-sep">✦</i>
+        <span class="m-item">NestJS</span><i class="m-sep">✦</i>
+        <span class="m-item">Express</span><i class="m-sep">✦</i>
+        <span class="m-item">WebSocket</span><i class="m-sep">✦</i>
+        <span class="m-item">高频交易</span><i class="m-sep">✦</i>
+        <span class="m-item">PostgreSQL</span><i class="m-sep">✦</i>
+        <span class="m-item">低延迟架构</span><i class="m-sep">✦</i>
+        <span class="m-item">AI 辅助编程</span><i class="m-sep">✦</i>
+        <span class="m-item">系统重构</span><i class="m-sep">✦</i>
+        <span class="m-item">Node.js</span><i class="m-sep">✦</i>
+        <span class="m-item">Docker</span><i class="m-sep">✦</i>
+        <span class="m-item">RxJS</span><i class="m-sep">✦</i>
+      </div>
+    </div>
+
+    <!-- ================= ABOUT ================= -->
     <section class="section" id="about">
       <div class="container">
-        <h2 class="section-title reveal"><span class="num">01</span>关于我</h2>
-        <div class="about-grid">
-          <div class="about-text reveal">
-            <p>
-              做了 <strong>12 年开发</strong>。前 7 年做前端——<strong>React</strong> 起家，Vue、小程序、Node.js 都写过；
-              后 5 年以独立开发者身份转向 <strong>Rust</strong>，从零搭了一套微秒级高频交易系统，
-              至今 7×24 在线跑着，从需求、架构到上线部署都是自己一人完成。
+        <div class="sec-head reveal">
+          <span class="sec-num">01</span>
+          <h2 class="sec-title">关于我</h2>
+          <span class="sec-line"></span>
+        </div>
+
+        <div class="about-wrap">
+          <!-- 个人主旨陈述卡 -->
+          <div class="about-hero glass reveal">
+            <div class="about-hero-tag"><span class="tag-dot d1"></span> ENGINEERING PHILOSOPHY · 工程师特质</div>
+            <h3 class="about-hero-title">12 年全栈沉淀，坚信代码的终极价值是<span class="grad">「把复杂系统做对、做快、做稳」</span></h3>
+            <p class="about-hero-desc">
+              前 7 年深耕前端工程与多端架构（<strong>React</strong> 起家，Vue、小程序、Node.js 均有丰富实战）；后 5 年以独立开发者身份转向 <strong>Rust</strong>，从 0 独立构建微秒级高频交易系统，至今 7×24 在线稳定运行。接手老旧系统多，能啃硬骨头；也能独立负责业务从 0 到上线交付的全生命周期。
             </p>
-            <p>
-              近两年写代码大量用 <strong>AI 辅助</strong>，但代码质量把关还是靠自己。
-              接手老系统比较多：重构、提速、换技术栈；也能从 0 把业务做到上线。
-            </p>
-            <p>
-              相比写代码，我更在意代码解决了什么问题：搭过 <strong>Sentry 前端报错采集</strong>，线上问题不用等用户反馈；
-              配过 <strong>Google Analytics 页面埋点</strong>，产品改版拿数据说话。
-            </p>
+          </div>
+
+          <!-- 三大核心特质 Bento 栅格 -->
+          <div class="about-pillars">
+            <div class="pillar-card glass tilt reveal">
+              <div class="pillar-top">
+                <span class="pillar-icon">⚛️</span>
+                <span class="pillar-badge">技术纵深</span>
+              </div>
+              <h4 class="pillar-title">前端根基 · 贯通底层</h4>
+              <p class="pillar-desc">
+                以 React 组件化与工程化体系为根基，拓展至多端交付与 Node.js 实时后端；深入 Rust 掌握多线程、异步 I/O 与内存安全，具备从像素界面到系统底层的全链路掌控力。
+              </p>
+              <div class="pillar-tags">
+                <span>React / Vue 架构</span>
+                <span>Rust 高并发</span>
+                <span>全链路交付</span>
+              </div>
+            </div>
+
+            <div class="pillar-card glass tilt reveal">
+              <div class="pillar-top">
+                <span class="pillar-icon">🛠️</span>
+                <span class="pillar-badge">攻坚治理</span>
+              </div>
+              <h4 class="pillar-title">能从 0 到 1 · 擅攻遗留重构</h4>
+              <p class="pillar-desc">
+                接手并治理过多套核心业务老旧系统：渐进式技术栈升级、首屏与构建提速、代码质量卡口建设；既能单枪匹马把新业务做到上线，也能化解历史包袱使系统重焕新生。
+              </p>
+              <div class="pillar-tags">
+                <span>老系统现代化</span>
+                <span>性能瓶颈攻坚</span>
+                <span>工程化治理</span>
+              </div>
+            </div>
+
+            <div class="pillar-card glass tilt reveal">
+              <div class="pillar-top">
+                <span class="pillar-icon">📊</span>
+                <span class="pillar-badge">业务闭环</span>
+              </div>
+              <h4 class="pillar-title">观测驱动 · 价值与质量守门</h4>
+              <p class="pillar-desc">
+                相比纯写代码更在意解决业务问题：搭建 Sentry 全链路报错采集实现异常主动感知，配置埋点拿数据说话；深度将 AI 融入日常编码提效，同时以高标准坚守代码质量底线。
+              </p>
+              <div class="pillar-tags">
+                <span>Sentry 报错治理</span>
+                <span>数据埋点驱动</span>
+                <span>AI 提效质量把关</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 快捷操作栏 -->
+          <div class="about-foot reveal">
+            <div class="about-foot-focus">
+              <span class="aff-label">当前聚焦方向</span>
+              <span class="aff-text">复杂前端架构 · 老旧系统重构 · 性能攻坚 · Rust 全栈系统</span>
+            </div>
+            <div class="about-foot-actions">
+              <a href="#projects" class="btn btn-primary btn-sm">查看精选项目 <span class="btn-arrow">→</span></a>
+              <a href="mailto:zsl99a@live.com" class="btn btn-ghost btn-sm">发邮件聊聊</a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SKILLS -->
+    <!-- ================= SKILLS ================= -->
     <section class="section" id="skills">
       <div class="container">
-        <h2 class="section-title reveal"><span class="num">02</span>核心技能栈</h2>
+        <div class="sec-head reveal">
+          <span class="sec-num">02</span>
+          <h2 class="sec-title">核心技能栈</h2>
+          <span class="sec-line"></span>
+        </div>
         <div class="skills-grid">
-          <div class="skill-card reveal">
+          <div class="skill-card glass tilt reveal">
             <div class="skill-head"><span class="skill-ico">⚛️</span><h3>前端架构与工程化</h3></div>
             <p class="skill-desc">组件库与工程搭建，首屏与 SEO 优化，多端适配，老系统重构</p>
             <div class="skill-tags">
-              <span>React</span><span>Vue</span><span>TypeScript</span><span>小程序</span><span>Vite</span><span>ant design</span><span>Less/Sass</span>
+              <span>React</span><span>Vue</span><span>TypeScript</span><span>小程序</span><span>Vite</span><span>ant&nbsp;design</span><span>Less/Sass</span>
             </div>
-            <div class="bar"><span class="bar-label">React（5 年+）</span><span class="bar-track"><i data-w="95"></i></span></div>
-            <div class="bar"><span class="bar-label">工程化与性能</span><span class="bar-track"><i data-w="90"></i></span></div>
+            <div class="bar"><span class="bar-label">React（5 年+）<em>95%</em></span><span class="bar-track"><i data-w="95"></i></span></div>
+            <div class="bar"><span class="bar-label">工程化与性能<em>90%</em></span><span class="bar-track"><i data-w="90"></i></span></div>
           </div>
 
-          <div class="skill-card reveal">
-            <div class="skill-head"><span class="skill-ico">🦀</span><h3>后端与高并发 (Rust)</h3></div>
-            <p class="skill-desc">实时数据流、WebSocket 多源聚合、高并发服务、PostgreSQL</p>
+          <div class="skill-card glass tilt reveal">
+            <div class="skill-head"><span class="skill-ico">🦀</span><h3>后端与高并发 <span class="sub">Rust · Node.js</span></h3></div>
+            <p class="skill-desc">实时数据流、WebSocket 多源聚合、NestJS/Express 服务端架构、PostgreSQL</p>
             <div class="skill-tags">
-              <span>Rust</span><span>Axum</span><span>Tokio</span><span>Node.js</span><span>PostgreSQL</span><span>RxJS</span>
+              <span>Rust</span><span>Axum</span><span>Tokio</span><span>Node.js</span><span>NestJS</span><span>Express</span><span>PostgreSQL</span><span>RxJS</span>
             </div>
-            <div class="bar"><span class="bar-label">Rust 系统编程</span><span class="bar-track"><i data-w="88"></i></span></div>
-            <div class="bar"><span class="bar-label">高并发/实时</span><span class="bar-track"><i data-w="92"></i></span></div>
+            <div class="bar"><span class="bar-label">Rust 系统编程<em>88%</em></span><span class="bar-track"><i data-w="88"></i></span></div>
+            <div class="bar"><span class="bar-label">Node.js / 高并发服务端<em>92%</em></span><span class="bar-track"><i data-w="92"></i></span></div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card glass tilt reveal">
             <div class="skill-head"><span class="skill-ico">⚡</span><h3>底层 · 高频交易</h3></div>
-            <p class="skill-desc">行情聚合、本地订单簿(LOB)、策略引擎、风控监控，微秒级延迟</p>
+            <p class="skill-desc">行情聚合、本地订单簿 (LOB)、策略引擎、风控监控，微秒级延迟</p>
             <div class="skill-tags">
               <span>行情网关</span><span>LOB</span><span>策略引擎</span><span>Grafana</span><span>多线程</span>
             </div>
-            <div class="bar"><span class="bar-label">低延迟架构</span><span class="bar-track"><i data-w="90"></i></span></div>
-            <div class="bar"><span class="bar-label">系统稳定性</span><span class="bar-track"><i data-w="93"></i></span></div>
+            <div class="bar"><span class="bar-label">低延迟架构<em>90%</em></span><span class="bar-track"><i data-w="90"></i></span></div>
+            <div class="bar"><span class="bar-label">系统稳定性<em>93%</em></span><span class="bar-track"><i data-w="93"></i></span></div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card glass tilt reveal">
             <div class="skill-head"><span class="skill-ico">🛠️</span><h3>工具链与协作</h3></div>
             <p class="skill-desc">Git 流程与 ESLint 质量卡口，Docker 与 CI/CD，AI 辅助开发</p>
             <div class="skill-tags">
               <span>Git</span><span>ESLint</span><span>Docker</span><span>Linux</span><span>AI 编程</span><span>CI/CD</span>
             </div>
-            <div class="bar"><span class="bar-label">研发流程提效</span><span class="bar-track"><i data-w="91"></i></span></div>
-            <div class="bar"><span class="bar-label">代码质量卡口</span><span class="bar-track"><i data-w="89"></i></span></div>
+            <div class="bar"><span class="bar-label">研发流程提效<em>91%</em></span><span class="bar-track"><i data-w="91"></i></span></div>
+            <div class="bar"><span class="bar-label">代码质量卡口<em>89%</em></span><span class="bar-track"><i data-w="89"></i></span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- EXPERIENCE -->
+    <!-- ================= EXPERIENCE ================= -->
     <section class="section" id="experience">
       <div class="container">
-        <h2 class="section-title reveal"><span class="num">03</span>工作经历</h2>
+        <div class="sec-head reveal">
+          <span class="sec-num">03</span>
+          <h2 class="sec-title">工作经历</h2>
+          <span class="sec-line"></span>
+        </div>
         <div class="timeline">
           <div class="tl-item reveal">
-            <span class="tl-dot"></span>
-            <div class="tl-card">
-              <div class="tl-meta"><span class="tl-role">独立开发者</span><span class="tl-date">2020.02 – 至今</span></div>
+            <span class="tl-dot">01</span>
+            <div class="tl-card glass tilt">
+              <div class="tl-meta">
+                <span class="tl-role">独立开发者</span>
+                <span class="tl-date"><i class="tl-pin"></i>2020.02 – 至今</span>
+              </div>
               <p class="tl-sum">独立承接互联网产品与 Rust 底层系统，从设计、开发到运维一条龙。</p>
               <ul class="tl-list">
                 <li>三端一体小游戏聚合平台：自研通用组件库 + 代码分割/懒加载，交付 <strong>100+</strong> 标准化页面，页面秒级加载。</li>
@@ -172,9 +338,12 @@
           </div>
 
           <div class="tl-item reveal">
-            <span class="tl-dot"></span>
-            <div class="tl-card">
-              <div class="tl-meta"><span class="tl-role">阿里巴巴 · 高级前端工程师</span><span class="tl-date">2018.03 – 2020.01</span></div>
+            <span class="tl-dot">02</span>
+            <div class="tl-card glass tilt">
+              <div class="tl-meta">
+                <span class="tl-role">阿里巴巴 · 高级前端工程师</span>
+                <span class="tl-date"><i class="tl-pin"></i>2018.03 – 2020.01</span>
+              </div>
               <p class="tl-sum">负责阿里云、盒马核心中后台的研发与架构升级。</p>
               <ul class="tl-list">
                 <li>盒马 / 阿里云中后台：CRM、营销、会员、审批流等核心业务；践行 DevOps 流水线与灰度发布等研发流程，保障版本迭代平稳可控。</li>
@@ -185,9 +354,12 @@
           </div>
 
           <div class="tl-item reveal">
-            <span class="tl-dot"></span>
-            <div class="tl-card">
-              <div class="tl-meta"><span class="tl-role">杭州东方网升科技 · 前端负责人</span><span class="tl-date">2014.05 – 2018.02</span></div>
+            <span class="tl-dot">03</span>
+            <div class="tl-card glass tilt">
+              <div class="tl-meta">
+                <span class="tl-role">杭州东方网升科技 · 前端负责人</span>
+                <span class="tl-date"><i class="tl-pin"></i>2014.05 – 2018.02</span>
+              </div>
               <p class="tl-sum">带前端团队，负责技术栈升级与日常研发管理。</p>
               <ul class="tl-list">
                 <li>主导全站从 <strong>jQuery → React</strong> 迁移，迭代效率提升 50%+，技术债务大幅下降。</li>
@@ -201,25 +373,33 @@
       </div>
     </section>
 
-    <!-- PROJECTS -->
+    <!-- ================= PROJECTS ================= -->
     <section class="section" id="projects">
       <div class="container">
-        <h2 class="section-title reveal"><span class="num">04</span>精选项目</h2>
+        <div class="sec-head reveal">
+          <span class="sec-num">04</span>
+          <h2 class="sec-title">精选项目</h2>
+          <span class="sec-line"></span>
+        </div>
         <div class="projects-grid" id="projects-grid" aria-live="polite">
-          <span class="gh-loading" id="projects-loading">正在从 GitHub 同步仓库…</span>
+          <span class="gh-loading">正在从 GitHub 同步仓库…</span>
         </div>
       </div>
     </section>
 
-    <!-- GITHUB -->
+    <!-- ================= GITHUB ================= -->
     <section class="section" id="github">
       <div class="container">
-        <h2 class="section-title reveal"><span class="num">05</span>GitHub 技术影响力</h2>
-        <div class="github-grid reveal">
-          <div class="gh-panel" id="gh-profile"><span class="gh-loading">正在同步身份信息…</span></div>
-          <div class="gh-panel" id="gh-stats"><span class="gh-loading">正在同步统计数字…</span></div>
-          <div class="gh-panel" id="gh-langs"><span class="gh-loading">正在计算语言构成…</span></div>
-          <div class="gh-panel" id="gh-activity"><span class="gh-loading">正在获取最近动态…</span></div>
+        <div class="sec-head reveal">
+          <span class="sec-num">05</span>
+          <h2 class="sec-title">GitHub 技术影响力</h2>
+          <span class="sec-line"></span>
+        </div>
+        <div class="gh-grid reveal">
+          <div class="gh-panel gh-panel-profile glass" id="gh-profile"><span class="gh-loading">正在同步身份信息…</span></div>
+          <div class="gh-panel gh-panel-langs glass" id="gh-langs"><span class="gh-loading">正在计算语言构成…</span></div>
+          <div class="gh-panel gh-panel-stats glass" id="gh-stats"><span class="gh-loading">正在同步统计数字…</span></div>
+          <div class="gh-panel gh-panel-activity glass" id="gh-activity"><span class="gh-loading">正在获取最近动态…</span></div>
         </div>
         <div class="github-strip reveal" id="gh-strip"></div>
         <div class="github-cards reveal">
@@ -228,27 +408,42 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
+    <!-- ================= CONTACT ================= -->
     <section class="section" id="contact">
       <div class="container">
-        <h2 class="section-title reveal"><span class="num">06</span>联系我</h2>
+        <div class="sec-head reveal">
+          <span class="sec-num">06</span>
+          <h2 class="sec-title">联系我</h2>
+          <span class="sec-line"></span>
+        </div>
         <div class="contact-card reveal">
-          <h3>一起把复杂系统做对、做快、做稳</h3>
-          <p>可承接方向：老旧系统重构 · 高并发性能优化 · 底层架构升级 · Rust 全栈交付</p>
+          <div class="contact-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="contact-glare" aria-hidden="true"></div>
+          <p class="contact-kicker">OPEN TO WORK · 合作 / 全职 / 顾问</p>
+          <h3>一起把复杂系统<br /><span class="grad">做对、做快、做稳</span></h3>
+          <p class="contact-sub">可承接方向：老旧系统重构 · 高并发性能优化 · 底层架构升级 · Rust 全栈交付</p>
+          <div class="contact-cta">
+            <a href="mailto:zsl99a@live.com" class="btn btn-primary btn-lg">
+              <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.784.784 2 1.75 2Zm1.586 2 .964.89L8 8.07l3.7-3.18.964-.89H3.336ZM15 5.943 8.254 11.56a.977.977 0 0 1-.508 0L1 5.943v6.307c0 .138.112.25.25.25h13.5a.25.25 0 0 0 .25-.25V5.943ZM1.75 3.5a.25.25 0 0 0-.25.25v.1L8 9.43l6.5-5.58v-.1a.25.25 0 0 0-.25-.25H1.75Z"/></svg>
+              zsl99a@live.com
+            </a>
+            <a href="https://github.com/zsl99a" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">GitHub 主页 <span class="btn-arrow">→</span></a>
+          </div>
           <div class="contact-rows">
-            <a class="contact-row" href="mailto:zsl99a@live.com"><span class="c-k">邮箱</span><span class="c-v">zsl99a@live.com</span></a>
-            <a class="contact-row" href="#contact"><span class="c-k">微信</span><span class="c-v">zsl99a</span></a>
-            <a class="contact-row" href="https://github.com/zsl99a" target="_blank" rel="noopener"><span class="c-k">GitHub</span><span class="c-v">github.com/zsl99a</span></a>
+            <a class="contact-row" href="mailto:zsl99a@live.com"><span class="c-k">邮箱</span><span class="c-v">zsl99a@live.com</span><span class="c-go">↗</span></a>
+            <a class="contact-row" href="#contact"><span class="c-k">微信</span><span class="c-v">zsl99a</span><span class="c-go">↗</span></a>
+            <a class="contact-row" href="https://github.com/zsl99a" target="_blank" rel="noopener"><span class="c-k">GitHub</span><span class="c-v">github.com/zsl99a</span><span class="c-go">↗</span></a>
           </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="footer">
     <div class="container footer-inner">
-      <span>© <span id="year">2026</span> zsl99a</span>
-      <span class="footer-sub">Built with ❤️, Rust &amp; a lot of ☕</span>
+      <span class="footer-brand"><span class="logo-mark">&lt;/&gt;</span> zsl99a</span>
+      <span class="footer-sub">© <span id="year">2026</span> · Built with Rust, React &amp; a lot of ☕</span>
     </div>
   </footer>
 
