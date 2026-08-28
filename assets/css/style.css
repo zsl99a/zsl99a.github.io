@@ -195,18 +195,24 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .lang{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
 .proj p{color:var(--muted);font-size:13.5px;flex:1}
-.proj-foot{display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.star{color:var(--accent-2);font-family:var(--mono)}
-.go{color:var(--accent);opacity:0;transform:translateX(-6px);transition:.25s}
+.proj-langs{display:flex;gap:1px;height:5px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06)}
+.proj-langs i{display:block;height:100%;min-width:2px}
+.proj-foot{display:flex;align-items:center;gap:14px;font-size:12.5px}
+.proj-foot span{font-family:var(--mono)}
+.proj-foot .star{color:var(--accent-2)}
+.proj-age{color:var(--muted)}
+.go{color:var(--accent);opacity:0;transform:translateX(-6px);transition:.25s;margin-left:auto}
 .proj:hover .go{opacity:1;transform:none}
 
 /* ============ GITHUB ============ */
-.github-badges{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
-.github-badges img{height:30px;border-radius:8px}
 .github-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .gh-panel{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel);padding:20px 22px;min-height:170px}
 .gh-panel h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;font-family:var(--mono)}
-.gh-bio{color:var(--muted);font-size:13px;font-family:var(--mono);margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.gh-profile{display:flex;gap:14px;align-items:center}
+.gh-avatar{width:64px;height:64px;border-radius:16px;border:2px solid rgba(54,224,200,.35)}
+.gh-profile-txt b{font-family:var(--mono);font-size:16px;color:var(--text)}
+.gh-profile-txt p{color:var(--muted);font-size:13px;margin-top:4px}
+.gh-profile-txt .gh-meta{font-family:var(--mono);font-size:11.5px}
 .gh-loading{color:var(--muted);font-family:var(--mono);font-size:13px}
 .gh-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .gh-metric{position:relative}
@@ -215,7 +221,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .gh-lang{margin-bottom:12px}
 .gh-lang:last-child{margin-bottom:0}
 .gh-lang-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
-.gh-lang-top .l-name{color:var(--text)}
+.gh-lang-top .l-name{display:inline-flex;align-items:center;gap:6px;color:var(--text)}
+.gh-lang-top .dot{width:8px;height:8px}
 .gh-lang-top .l-pct{color:var(--muted);font-family:var(--mono)}
 .gh-lang-bar{height:8px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden}
 .gh-lang-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--accent-3));width:0;transition:width 1s ease}
@@ -225,6 +232,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .github-cards{display:flex;justify-content:center;margin-top:18px}
 .gh-card{max-width:100%;height:auto;border:1px solid var(--border);border-radius:14px;background:var(--panel);box-shadow:0 14px 44px rgba(0,0,0,.35)}
 .gh-note{margin-top:14px;font-size:12.5px;color:var(--muted)}
+
+/* 最近公开动态 */
+.gh-activity-item{display:flex;align-items:baseline;gap:14px;padding:10px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.gh-activity-item:last-of-type{border-bottom:0}
+.gh-activity-item .a-txt{flex:1;color:var(--muted)}
+.gh-activity-item .a-txt b{color:var(--text);font-family:var(--mono);font-weight:600}
+.gh-activity-item .a-time{font-family:var(--mono);font-size:11.5px;color:var(--accent-2);white-space:nowrap}
+.gh-activity-more{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--accent);transition:opacity .2s}
+.gh-activity-more:hover{opacity:.7}
 
 /* ============ CONTACT ============ */
 .contact-card{

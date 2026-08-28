@@ -194,16 +194,16 @@
   }
 
   /* ========================================================
-     GitHub 实时同步（直连官方 API，数字不写死）
-     项目列表 / 统计面板 / 语言分布 / 统计条全部动态渲染；
-     徽章与贡献图为服务端实时生成的动态图片。
+     GitHub 实时同步（全部数据取自官方 REST API，页面零写死数字）
+     - 精选项目：Star / Fork / Issue / 相对更新时间的仓库指标，语言构成条为仓库实际代码
+     - 身份档案 + 统计面板 + 语言构成 + 最近公开动态 + 动态统计条
      ======================================================== */
   const GH_USER = "zsl99a";
   const GH_HOME = "https://github.com/" + GH_USER;
   const esc = (s) =>
     String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  // 精选仓库介绍（仅文案；Star / 语言 / 更新时间 / 仓库列表全部来自 API）
+  // 精选仓库介绍（仅文案；Star / Fork / 语言 / 时间 / 仓库列表全部来自 API）
   const PROJ_DESC = {
     "zsl99a.github.io": "个人主页仓库：纯静态实现，GitHub 数据实时同步。",
     websocket: "高性能异步 WebSocket 客户端库：自动重连(指数退避)、心跳、消息路由、事件驱动，基于 Tokio。",
@@ -226,6 +226,8 @@
     Vue: "#41b883",
     Go: "#00add8",
     Python: "#3572a5",
+    Shell: "#89e051",
+    Makefile: "#427819",
   };
 
   const fetchJSON = (url) =>
@@ -235,6 +237,16 @@
     });
 
   const fmt = (n) => (n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n));
+  const starsOf = (repos) => repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
+  const forksOf = (repos) => repos.reduce((s, r) => s + (r.forks_count || 0), 0);
+
+  const timeAgo = (iso) => {
+    const s = Math.max(60, (Date.now() - new Date(iso).getTime()) / 1000);
+    if (s < 3600) return Math.round(s / 60) + " 分钟前";
+    if (s < 86400) return Math.round(s / 3600) + " 小时前";
+    if (s < 2592000) return Math.round(s / 86400) + " 天前";
+    return Math.round(s / 2592000) + " 个月前";
+  };
 
   // 数字递增动画（尊重减少动效偏好）
   const animateNumber = (el, target) => {
@@ -249,108 +261,232 @@
     requestAnimationFrame(step);
   };
 
-  /* ---------- 项目卡片（动态渲染） ---------- */
-  function renderProjects(repos) {
-    const grid = document.getElementById("projects-grid");
-    const loading = document.getElementById("projects-loading");
-    if (!grid) return;
-    if (loading) loading.remove();
-
-    // 排除主页仓库自身与 fork；排序：有语言标识 > 精选描述 > Star > 更新时间
-    const mine = repos
+  const sortMine = (repos) =>
+    repos
       .filter((r) => !r.fork && r.name !== "zsl99a.github.io")
       .sort((a, b) =>
         ((b.language ? 1 : 0) - (a.language ? 1 : 0)) ||
         ((PROJ_DESC[b.name] ? 1 : 0) - (PROJ_DESC[a.name] ? 1 : 0)) ||
         (b.stargazers_count - a.stargazers_count) ||
         (new Date(b.pushed_at) - new Date(a.pushed_at))
+      );
+
+  /* ---------- 精选项目：卡片 + 语言构成条 + 仓库指标 ---------- */
+  function renderProjects(repos) {
+    const grid = document.getElementById("projects-grid");
+    const loading = document.getElementById("projects-loading");
+    if (!grid) return;
+    if (loading) loading.remove();
+    const mine = sortMine(repos).slice(0, 6);
+
+    // 并行拉取各仓库语言构成（单仓库失败则回退为空条）
+    Promise.all(
+      mine.map((r) =>
+        r.language ? fetchJSON(r.languages_url).catch(() => ({})) : Promise.resolve({})
       )
-      .slice(0, 6);
-
-    grid.innerHTML = mine
-      .map((r) => {
-        const lang = r.language || "其他";
-        const color = LANG_COLOR[lang] || "var(--accent-3)";
-        const desc = PROJ_DESC[r.name] || r.description || "开源项目，持续迭代中。";
-        return (
-          '<a class="proj reveal" href="' + GH_HOME + "/" + r.name +
-          '" target="_blank" rel="noopener">' +
-          '<div class="proj-top"><h3>' + esc(r.name) + '</h3><span class="lang">' +
-          '<i class="dot" style="background:' + color + '"></i>' + esc(lang) + "</span></div>" +
-          "<p>" + esc(desc) + "</p>" +
-          '<div class="proj-foot"><span class="star">★ ' + r.stargazers_count + "</span>" +
-          '<span class="go">查看仓库 →</span></div></a>'
-        );
-      })
-      .join("") +
-      '<a class="proj reveal" href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">' +
-      '<div class="proj-top"><h3>更多仓库 →</h3><span class="lang">GitHub</span></div>' +
-      "<p>访问 GitHub 主页查看全部 " + repos.filter((r) => !r.fork).length + " 个原创仓库（含 fork 共 " + repos.length + " 个）。</p>" +
-      '<div class="proj-foot"><span class="star">profile</span><span class="go">前往 →</span></div></a>';
-
-    observeReveal(grid);
+    ).then((rows) => {
+      grid.innerHTML =
+        mine
+          .map((r, i) => {
+            const lang = r.language || "其他";
+            const color = LANG_COLOR[lang] || "var(--accent-3)";
+            const desc = PROJ_DESC[r.name] || r.description || "开源项目，持续迭代中。";
+            const bytes = rows[i] || {};
+            const totalB = Object.values(bytes).reduce((a, b) => a + b, 0);
+            const bar = totalB
+              ? Object.entries(bytes)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 3)
+                  .map(([l, b]) =>
+                    '<i style="width:' + Math.round((b / totalB) * 100) + "%;background:" +
+                    (LANG_COLOR[l] || "var(--accent-3)") + '" title="' + esc(l) + " " + Math.round((b / totalB) * 100) + '%"></i>'
+                  )
+                  .join("")
+              : '<i style="width:100%;background:var(--border)"></i>';
+            return (
+              '<a class="proj reveal" href="' + GH_HOME + "/" + r.name +
+              '" target="_blank" rel="noopener">' +
+              '<div class="proj-top"><h3>' + esc(r.name) + '</h3><span class="lang">' +
+              '<i class="dot" style="background:' + color + '"></i>' + esc(lang) + "</span></div>" +
+              "<p>" + esc(desc) + "</p>" +
+              '<div class="proj-langs" title="代码语言构成">' + bar + "</div>" +
+              '<div class="proj-foot"><span class="star">★ ' + r.stargazers_count + "</span>" +
+              "<span>⑂ " + r.forks_count + "</span>" +
+              "<span>⚑ " + r.open_issues_count + "</span>" +
+              '<span class="proj-age">' + timeAgo(r.pushed_at) + " 更新</span>" +
+              '<span class="go">查看仓库 →</span></div></a>'
+            );
+          })
+          .join("") +
+          '<a class="proj reveal" href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">' +
+          '<div class="proj-top"><h3>更多仓库 →</h3><span class="lang">GitHub</span></div>' +
+          "<p>访问 GitHub 主页查看全部 " + repos.filter((r) => !r.fork).length +
+          " 个原创仓库（含 fork 共 " + repos.length + " 个）。</p>" +
+          '<div class="proj-foot"><span class="star">profile</span><span class="go">前往 →</span></div></a>';
+      observeReveal(grid);
+    });
   }
 
-  /* ---------- 统计面板 + 语言分布 + 统计条 ---------- */
-  function renderGitHubStats(u, repos) {
-    const statsEl = document.getElementById("gh-stats");
-    const langsEl = document.getElementById("gh-langs");
-    const stripEl = document.getElementById("gh-strip");
-    if (!statsEl || !langsEl) return;
+  /* ---------- 身份档案 + 统计面板（同步渲染） ---------- */
+  function renderProfile(u) {
+    const el = document.getElementById("gh-profile");
+    if (!el) return;
+    el.innerHTML =
+      "<h3>身份档案</h3><div class=\"gh-profile\">" +
+      '<img class="gh-avatar" src="' + u.avatar_url + '&s=96" alt="头像" loading="lazy" />' +
+      '<div class="gh-profile-txt"><b>' + esc(u.login) + "</b>" +
+      (u.bio ? "<p>" + esc(u.bio) + "</p>" : "") +
+      '<p class="gh-meta">' + (u.location ? "📍 " + esc(u.location) + " · " : "") +
+      "入坑于 " + new Date(u.created_at).getFullYear() + " 年 · " +
+      (u.hireable ? "🟢 可接合作" : "🔴 专注自研") + "</p></div></div>";
+  }
 
-    const stars = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
-    const bio = u.bio ? '<p class="gh-bio">' + esc(u.bio) + "</p>" : "";
+  function renderStats(u, repos) {
+    const el = document.getElementById("gh-stats");
+    if (!el) return;
+    const stars = starsOf(repos);
+    const forks = forksOf(repos);
 
-    statsEl.innerHTML =
-      "<h3>GitHub 概览</h3>" + bio + '<div class="gh-metrics">' +
+    el.innerHTML =
+      "<h3>GitHub 概览</h3>" + '<div class="gh-metrics">' +
       '<div class="gh-metric"><b data-n="' + u.public_repos + '">0</b><span>公开仓库</span></div>' +
       '<div class="gh-metric"><b data-n="' + stars + '">0</b><span>累计 Star</span></div>' +
+      '<div class="gh-metric"><b data-n="' + forks + '">0</b><span>累计 Fork</span></div>' +
       '<div class="gh-metric"><b data-n="' + u.followers + '">0</b><span>Followers</span></div>' +
-      '<div class="gh-metric"><b data-n="' + u.following + '">0</b><span>Following</span></div>' +
       "</div>";
-    statsEl.querySelectorAll("b[data-n]").forEach((b) => animateNumber(b, +b.dataset.n));
-
-    // 语言分布按仓库主语言计数（fork 不计入）
-    const counts = {};
-    repos.forEach((r) => { if (!r.fork) { const l = r.language; if (l) counts[l] = (counts[l] || 0) + 1; } });
-    const total = Object.values(counts).reduce((a, b) => a + b, 0);
-    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
-    langsEl.innerHTML =
-      "<h3>主要语言</h3>" +
-      (sorted.length
-        ? sorted
-            .map(([name, n]) => {
-              const pct = total ? Math.round((n / total) * 100) : 0;
-              return (
-                '<div class="gh-lang"><div class="gh-lang-top"><span class="l-name">' + esc(name) +
-                '</span><span class="l-pct">' + pct + "%</span></div>" +
-                '<div class="gh-lang-bar"><i style="width:' + pct + '%"></i></div></div>'
-              );
-            })
-            .join("")
-        : '<span class="gh-loading">暂无数据</span>');
-
-    // 动态统计条
-    const topLang = sorted[0] ? sorted[0][0] : "—";
-    const latest = repos
-      .filter((r) => !r.fork && r.name !== "zsl99a.github.io")
-      .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))[0];
-    stripEl.innerHTML =
-      '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">📦 ' + u.public_repos + " 个公开仓库</a>" +
-      '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">⭐ 累计 ' + stars + " Star</a>" +
-      '<a href="' + GH_HOME + '" target="_blank" rel="noopener">👥 ' + u.followers + " Followers</a>" +
-      '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">🦀 主力语言：' + esc(topLang) + "</a>" +
-      (latest ? '<a href="' + GH_HOME + "/" + latest.name + '" target="_blank" rel="noopener">🚀 最近更新：' + esc(latest.name) + "</a>" : "");
+    el.querySelectorAll("b[data-n]").forEach((b) => animateNumber(b, +b.dataset.n));
   }
 
-  /* ---------- 入口：拉取用户 + 仓库数据并渲染 ---------- */
+  /* ---------- 语言构成（按字节聚合全部代码）+ 动态统计条 ---------- */
+  function renderLangsAndStrip(u, repos) {
+    const langsEl = document.getElementById("gh-langs");
+    const stripEl = document.getElementById("gh-strip");
+    if (!langsEl) return;
+
+    const targets = sortMine(repos).slice(0, 6);
+    Promise.all(targets.map((r) => fetchJSON(r.languages_url).catch(() => null))).then((rows) => {
+      const bytes = {};
+      let degraded = false;
+      targets.forEach((r, i) => {
+        if (!rows[i]) { degraded = true; return; }
+        Object.entries(rows[i]).forEach(([l, b]) => { bytes[l] = (bytes[l] || 0) + b; });
+      });
+      let sorted = Object.entries(bytes).sort((a, b) => b[1] - a[1]).slice(0, 6);
+      if (degraded || !sorted.length) {
+        // 降级：按仓库主语言计数
+        const counts = {};
+        repos.forEach((r) => { if (!r.fork && r.language) counts[r.language] = (counts[r.language] || 0) + 1; });
+        sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+      }
+      const total = sorted.reduce((s, [, n]) => s + n, 0);
+      langsEl.innerHTML =
+        "<h3>代码语言构成</h3>" +
+        (sorted.length
+          ? sorted
+              .map(([name, n]) => {
+                const pct = total ? Math.round((n / total) * 100) : 0;
+                return (
+                  '<div class="gh-lang"><div class="gh-lang-top"><span class="l-name">' +
+                  '<i class="dot" style="background:' + (LANG_COLOR[name] || "var(--accent-3)") + '"></i>' + esc(name) +
+                  '</span><span class="l-pct">' + pct + "%</span></div>" +
+                  '<div class="gh-lang-bar"><i style="width:' + pct + '%"></i></div></div>'
+                );
+              })
+              .join("")
+          : '<span class="gh-loading">暂无数据</span>');
+
+      // 动态统计条
+      const topLang = sorted[0] ? sorted[0][0] : "—";
+      const latest = repos
+        .filter((r) => !r.fork && r.name !== "zsl99a.github.io")
+        .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))[0];
+      if (stripEl) {
+        stripEl.innerHTML =
+          '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">📦 ' + u.public_repos + " 个公开仓库</a>" +
+          '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">⭐ 累计 ' + starsOf(repos) + " Star</a>" +
+          '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">⑂ 累计 ' + forksOf(repos) + " Fork</a>" +
+          '<a href="' + GH_HOME + '" target="_blank" rel="noopener">👥 ' + u.followers + " Followers</a>" +
+          '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">🦀 主力语言：' + esc(topLang) + "</a>" +
+          (latest ? '<a href="' + GH_HOME + "/" + latest.name + '" target="_blank" rel="noopener">🚀 最近更新：' + esc(latest.name) + "</a>" : "");
+      }
+    });
+  }
+
+  /* ---------- 最近公开动态（events API，独立降级） ----------
+     注意：/users/{user}/events 是该用户“自己做过的事”（WatchEvent = Star 了别人） */
+  const EV_STYLE = {
+    PushEvent: ["🔨", "推送代码至 "],
+    CreateEvent: ["✨", "创建了 "],
+    WatchEvent: ["⭐", "Star 了 "],
+    ForkEvent: ["⑂", "Fork 了 "],
+    IssuesEvent: ["🐛", "处理 Issue："],
+    ReleaseEvent: ["📦", "发布版本："],
+    PublicEvent: ["🎉", "开源了 "],
+    PullRequestEvent: ["🔀", "提交 PR："],
+    DeleteEvent: ["✂️", "删除了 "],
+  };
+
+  function renderActivity() {
+    const el = document.getElementById("gh-activity");
+    if (!el) return;
+    fetchJSON("https://api.github.com/users/" + GH_USER + "/events/public?per_page=30")
+      .then((evs) => {
+        const items = [];
+        let lastKey = null;
+        for (const e of evs || []) {
+          const repo = e.repo ? e.repo.name.replace(GH_USER + "/", "") : "";
+          // 仅 Star/Fork 类相邻重复合并，Push 每次保留
+          const key = e.type + "|" + repo + (e.type === "PushEvent" ? "|" + e.created_at : "");
+          if (key === lastKey) continue;
+          lastKey = key;
+          const style = EV_STYLE[e.type] || ["📌", "更新了 "];
+          let text = style[1] + "<b>" + esc(repo || "GitHub") + "</b>";
+          if (e.type === "PushEvent") {
+            const commits = (e.payload && e.payload.commits) || [];
+            text = (commits.length ? "推送 " + commits.length + " 次提交至 " : "推送了代码至 ") +
+              "<b>" + esc(repo) + "</b>" +
+              (commits[0] ? "：" + esc(commits[0].message.replace(/\n.*/, "").slice(0, 42)) : "");
+          } else if (e.type === "CreateEvent") {
+            const t = e.payload && e.payload.ref_type;
+            text = t === "repository"
+              ? "创建了仓库 <b>" + esc(repo) + "</b>"
+              : "在 <b>" + esc(repo) + "</b> 创建了 " + esc(e.payload && e.payload.ref ? e.payload.ref : "分支");
+          } else if (e.type === "IssuesEvent" && e.payload) {
+            text = "#" + e.payload.issue.number + " " + e.payload.action + "（<b>" + esc(repo) + "</b>）";
+          } else if (e.type === "ReleaseEvent" && e.payload) {
+            text = "发布 " + esc(e.payload.release.tag_name) + "（<b>" + esc(repo) + "</b>）";
+          }
+          items.push({ text: text, time: timeAgo(e.created_at) });
+          if (items.length >= 7) break;
+        }
+        el.innerHTML =
+          "<h3>最近公开动态</h3>" +
+          (items.length
+            ? items
+                .map((i) =>
+                  '<div class="gh-activity-item"><span class="a-txt">' + i.text +
+                  '</span><span class="a-time">' + i.time + "</span></div>"
+                )
+                .join("") +
+              '<a class="gh-activity-more" href="' + GH_HOME + '" target="_blank" rel="noopener">前往 GitHub 主页 →</a>'
+            : '<span class="gh-loading">暂无公开动态</span>');
+      })
+      .catch(() => {
+        el.innerHTML = "<h3>最近公开动态</h3><span class=\"gh-loading\">动态同步失败</span>";
+      });
+  }
+
+  /* ---------- 入口：官方 API 拉取并渲染 ---------- */
   Promise.all([
     fetchJSON("https://api.github.com/users/" + GH_USER),
     fetchJSON("https://api.github.com/users/" + GH_USER + "/repos?per_page=100&sort=updated"),
   ])
     .then(([u, repos]) => {
       renderProjects(repos);
-      renderGitHubStats(u, repos);
+      renderProfile(u);
+      renderStats(u, repos);
+      renderLangsAndStrip(u, repos);
+      renderActivity();
     })
     .catch(() => {
       document.querySelectorAll(".gh-loading").forEach((el) => {

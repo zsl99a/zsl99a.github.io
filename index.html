@@ -207,7 +207,7 @@
     <section class="section" id="projects">
       <div class="container">
         <h2 class="section-title reveal"><span class="num">04</span>精选项目</h2>
-        <p class="reveal projects-note">以下仓库列表实时同步自 GitHub API，新增仓库与 Star 变化无需手动更新。</p>
+        <p class="reveal projects-note">以下仓库实时同步自 <b>GitHub 官方 API</b>：Star 优先、更新时间次之，语言条为仓库实际代码构成。</p>
         <div class="projects-grid" id="projects-grid" aria-live="polite">
           <span class="gh-loading" id="projects-loading">正在从 GitHub 同步仓库…</span>
         </div>
@@ -218,21 +218,18 @@
     <section class="section" id="github">
       <div class="container">
         <h2 class="section-title reveal"><span class="num">05</span>GitHub 技术影响力</h2>
-        <p class="reveal projects-note">统计数字实时取自 <b>GitHub API</b>，随仓库动态自动同步，公开透明。</p>
-        <div class="github-badges reveal" aria-label="GitHub 动态徽章">
-          <img src="https://img.shields.io/github/followers/zsl99a?style=for-the-badge&amp;logo=github&amp;logoColor=white&amp;label=Followers&amp;color=36E0C8" alt="GitHub Followers" loading="lazy" />
-          <img src="https://img.shields.io/github/stars/zsl99a?style=for-the-badge&amp;logo=github&amp;logoColor=white&amp;label=Stars&amp;color=7C5CFF" alt="GitHub Stars" loading="lazy" />
-          <img src="https://img.shields.io/github/last-commit/zsl99a/zsl99a.github.io?style=for-the-badge&amp;label=%E6%9C%80%E8%BF%91%E4%BA%A4%E4%BB%A3&amp;color=F5A623" alt="主页最近提交" loading="lazy" />
-        </div>
+        <p class="reveal projects-note">全部数据实时取自 <b>GitHub 官方 API</b>：身份档案、仓库指标、语言构成与公开动态，随仓库变化自动同步。</p>
         <div class="github-grid reveal">
-          <div class="gh-panel" id="gh-stats"><span class="gh-loading">正在同步 GitHub 数据…</span></div>
-          <div class="gh-panel" id="gh-langs"><span class="gh-loading">正在计算语言分布…</span></div>
+          <div class="gh-panel" id="gh-profile"><span class="gh-loading">正在同步身份信息…</span></div>
+          <div class="gh-panel" id="gh-stats"><span class="gh-loading">正在同步统计数字…</span></div>
+          <div class="gh-panel" id="gh-langs"><span class="gh-loading">正在计算语言构成…</span></div>
+          <div class="gh-panel" id="gh-activity"><span class="gh-loading">正在获取最近动态…</span></div>
         </div>
         <div class="github-strip reveal" id="gh-strip"></div>
         <div class="github-cards reveal">
           <img class="gh-card" src="https://streak-stats.demolab.com/?user=zsl99a&amp;theme=tokyonight&amp;hide_border=true" alt="zsl99a 的贡献热力统计：总贡献 / 当前连击 / 最长连击" loading="lazy" />
         </div>
-        <p class="reveal projects-note gh-note">徽章与贡献图为服务端实时生成的动态图片（GitHub 个人主页 README 中经 camo.githubusercontent.com 代理渲染），数据自动保持最新。</p>
+        <p class="reveal projects-note gh-note">贡献热力图为服务端实时生成的动态图片（GitHub 个人主页 README 中经 camo.githubusercontent.com 代理渲染），数据自动保持最新。</p>
       </div>
     </section>
 
