@@ -29,14 +29,4 @@
 
 ---
 
-## 数据同步（自动，零维护）
-
-本站的 GitHub 相关数据 **全部动态获取**，页面中无写死数字：
-
-- **项目卡片**：实时调取 `api.github.com/users/zsl99a/repos`，按「有语言标识 → 精选描述 → Star → 更新时间」排序，新增仓库与 Star 变化自动同步；
-- **统计面板 / 语言分布 / 统计条**：公开仓库数、累计 Star、Followers 等取自 GitHub API，每次访问均为最新值；
-- **动态徽章与贡献图**：shields.io 徽章（Followers / Stars / 最近提交）与 streak-stats 贡献热力图为服务端实时生成的 SVG，在 GitHub 个人主页 README 中即经 `camo.githubusercontent.com` 代理渲染。
-
-> 未认证调用 GitHub API 限 60 次/小时/IP，个人站点访问量下远远够用；若需更高配额，可在请求头加 `Authorization: Bearer <token>`。
-
-<sub>本站为纯静态实现（HTML / CSS / JS，无构建步骤）。GitHub 个人首页内容已迁移至 [zsl99a/zsl99a](https://github.com/zsl99a/zsl99a) 仓库（含贡献蛇工作流，每日自动生成并推送 `output` 分支）；本地 `profile/` 为归档副本。</sub>
+<sub>本站为纯静态实现（HTML / CSS / JS，无构建步骤）；GitHub 数据由 `.github/workflows/sync-github.yml` 每小时同步为静态 JSON，个人首页见 [zsl99a/zsl99a](https://github.com/zsl99a/zsl99a)。</sub>
