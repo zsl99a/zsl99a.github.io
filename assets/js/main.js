@@ -190,7 +190,6 @@
     const USER = "zsl99a";
     const esc = (s) =>
       String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-    const fail = (el, msg) => { el.innerHTML = '<span class="gh-err">' + esc(msg) + "</span>"; };
 
     Promise.all([
       fetch("https://api.github.com/users/" + USER, { headers: { Accept: "application/vnd.github+json" } }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
@@ -223,11 +222,7 @@
             })
             .join("");
       })
-      .catch(() => {
-        const msg = "GitHub 数据暂不可获取（网络或 API 限流）";
-        fail(statsEl, msg);
-        fail(langsEl, msg);
-      });
+      .catch(() => {});
   }
   renderGitHubStats();
 })();
