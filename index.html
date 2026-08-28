@@ -65,12 +65,12 @@
   <main>
     <!-- ================= HERO ================= -->
     <section class="hero" id="home">
-      <div class="hero-watermark" aria-hidden="true">HFT</div>
+      <div class="hero-watermark" aria-hidden="true">RUST</div>
       <div class="container hero-inner">
         <div class="hero-copy">
           <div class="hero-badge">
             <span class="dot"></span>
-            <span class="badge-txt">行情引擎在线 · 开放合作</span>
+            <span class="badge-txt">前端 / 全栈架构 · 独立开发者</span>
           </div>
           <h1 class="hero-h1">
             <span class="hero-name grad">zsl99a</span>
@@ -103,23 +103,23 @@
           </div>
         </div>
 
-        <!-- 终端窗口（HFT 引擎实时演示） -->
+        <!-- 终端窗口（核心引擎实时演示） -->
         <div class="hero-stage" aria-hidden="true">
           <div class="terminal">
             <div class="term-bar">
               <span class="term-dots"><i></i><i></i><i></i></span>
-              <span class="term-title">hft-engine · cargo run</span>
-              <span class="term-status">● 7×24</span>
+              <span class="term-title">core-engine · cargo run</span>
+              <span class="term-status">● running</span>
             </div>
             <div class="term-body">
-              <div class="t-line t-dim">$ cargo run --release --bin hft-engine</div>
-              <div class="t-line t-dim">▸ Compiling hft-engine v0.4.2 ...</div>
-              <div class="t-line"><span class="t-ok">●</span> ws::gateway&nbsp;&nbsp;&nbsp;&nbsp;usdjpy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected&nbsp;&nbsp;<span class="t-v">0.31ms</span></div>
-              <div class="t-line"><span class="t-ok">●</span> lob::build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;depth=200&nbsp;&nbsp;snapshots&nbsp;&nbsp;<span class="t-v">12,408/s</span></div>
-              <div class="t-line"><span class="t-ok">●</span> strategy::mm&nbsp;&nbsp;active&nbsp;&nbsp;&nbsp;&nbsp;pnl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-up">+$1,284.55</span></div>
-              <div class="t-line"><span class="t-ok">●</span> risk::guard&nbsp;&nbsp;&nbsp;ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drawdown&nbsp;&nbsp;<span class="t-v">0.42%</span></div>
-              <div class="t-line"><span class="t-amber">○</span> order::fill&nbsp;&nbsp;&nbsp;9c2e1f&nbsp;&nbsp;&nbsp;&nbsp;qty 1.00&nbsp;&nbsp;<span class="t-amber">@151.204</span></div>
-              <div class="t-line"><span class="t-ok">●</span> engine::loop&nbsp;&nbsp;running&nbsp;&nbsp;&nbsp;&nbsp;uptime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-ok">7×24h</span></div>
+              <div class="t-line t-dim">$ cargo run --release</div>
+              <div class="t-line t-dim">▸ Compiling core-engine v0.4.2 ...</div>
+              <div class="t-line"><span class="t-ok">●</span> ws::gateway&nbsp;&nbsp;&nbsp;&nbsp;stream&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected&nbsp;&nbsp;<span class="t-v">0.31ms</span></div>
+              <div class="t-line"><span class="t-ok">●</span> orderbook&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;depth=200&nbsp;&nbsp;snapshots&nbsp;&nbsp;<span class="t-v">12,408/s</span></div>
+              <div class="t-line"><span class="t-ok">●</span> strategy::core&nbsp;active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workers&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-up">8 threads</span></div>
+              <div class="t-line"><span class="t-ok">●</span> risk::guard&nbsp;&nbsp;&nbsp;ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memory&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-v">24.6MB</span></div>
+              <div class="t-line"><span class="t-amber">○</span> event::dispatch&nbsp;sync&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency&nbsp;&nbsp;&nbsp;<span class="t-amber">微秒级</span></div>
+              <div class="t-line"><span class="t-ok">●</span> service::loop&nbsp;&nbsp;running&nbsp;&nbsp;&nbsp;&nbsp;uptime&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-ok">7×24h</span></div>
               <div class="t-line t-cmd"><span class="t-prompt">❯</span><span class="t-caret"></span></div>
             </div>
           </div>
