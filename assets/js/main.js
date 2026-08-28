@@ -8,6 +8,34 @@
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- 快捷复制支持 ---------- */
+  document.querySelectorAll("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const val = btn.getAttribute("data-copy");
+      if (!val) return;
+      const statusEl = btn.querySelector(".copy-status") || btn;
+      const originalText = statusEl.textContent;
+      const setCopied = () => {
+        statusEl.textContent = "已复制 ✓";
+        statusEl.classList.add("copied");
+        setTimeout(() => {
+          statusEl.textContent = originalText;
+          statusEl.classList.remove("copied");
+        }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(val).then(setCopied).catch(() => {});
+      } else {
+        const input = document.createElement("input");
+        input.value = val;
+        document.body.appendChild(input);
+        input.select();
+        try { document.execCommand("copy"); setCopied(); } catch (e) {}
+        document.body.removeChild(input);
+      }
+    });
+  });
+
   /* ---------- 年份 ---------- */
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
