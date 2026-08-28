@@ -18,7 +18,7 @@
 - 🦀 **底层纵深**：Rust (Axum / Tokio) 高性能异步 I/O、自研自营低延迟交易底座、并发模型与高可靠性设计
 - 🛠️ **质量基建**：Sentry 异常全链路监控、规范化数据埋点、严格代码质量卡口、CI/CD 自动化
 
-> 核心聚焦：**现代前端架构 · 遗留系统重构 · NestJS / Express 全栈 · 性能瓶颈攻坚**
+> 核心聚焦：**React 前端架构演进 · Rust + Axum 高性能系统 · 遗留系统重构与性能攻坚**
 
 ## 更多入口
 
@@ -29,4 +29,4 @@
 
 ---
 
-<sub>本站为纯静态实现（HTML / CSS / JS，无构建步骤）；GitHub 数据由 GitHub Actions 定时同步为静态 JSON，个人 Profile 见 [zsl99a/zsl99a](https://github.com/zsl99a/zsl99a)。</sub>
+<sub>本站为纯静态实现（HTML / CSS / JS，无构建步骤）；GitHub 数据由 GitHub Actions 定时同步为静态 JSON。</sub>

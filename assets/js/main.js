@@ -287,7 +287,7 @@
 
   const sortMine = (repos) =>
     repos
-      .filter((r) => !r.fork && r.name !== "zsl99a.github.io")
+      .filter((r) => !r.fork && r.name !== "zsl99a.github.io" && r.name !== "zsl99a")
       .sort((a, b) =>
         ((b.language ? 1 : 0) - (a.language ? 1 : 0)) ||
         ((PROJ_DESC[b.name] ? 1 : 0) - (PROJ_DESC[a.name] ? 1 : 0)) ||
@@ -413,7 +413,7 @@
     // 动态统计条
     const topLang = sorted[0] ? sorted[0][0] : "—";
     const latest = repos
-      .filter((r) => !r.fork && r.name !== "zsl99a.github.io")
+      .filter((r) => !r.fork && r.name !== "zsl99a.github.io" && r.name !== "zsl99a")
       .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))[0];
     if (stripEl) {
       stripEl.innerHTML =
