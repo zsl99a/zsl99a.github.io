@@ -1,6 +1,7 @@
 /* ========================================================
    zsl99a · 个人主页交互脚本
-   - 打字机 / 粒子背景 / 滚动揭示 / 数字递增 / 技能条 / 导航高亮 / 移动端菜单
+   - 打字机 / 粒子背景 / 滚动揭示 / 技能条 / 导航高亮 / 移动端菜单
+   - GitHub 数据实时同步（直连官方 API + 动态图片），页面零写死数据
    ======================================================== */
 (function () {
   "use strict";
@@ -83,7 +84,7 @@
   }
 
   /* ---------- 滚动揭示 + 技能条 ---------- */
-  const revealEls = document.querySelectorAll(".reveal");
+  let revealObserver = null;
 
   const fillBars = (card) => {
     card.querySelectorAll(".bar-track i").forEach((i) => {
@@ -91,13 +92,23 @@
     });
   };
 
+  // 动态渲染出的元素也接入滚动揭示动画
+  const observeReveal = (root) => {
+    const els = (root || document).querySelectorAll(".reveal:not(.in)");
+    if (revealObserver) {
+      els.forEach((el) => revealObserver.observe(el));
+    } else {
+      els.forEach((el) => el.classList.add("in"));
+    }
+  };
+
   const revealAll = () => {
-    revealEls.forEach((el) => el.classList.add("in"));
+    document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in"));
     document.querySelectorAll(".skill-card").forEach(fillBars);
   };
 
   if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
+    revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
@@ -105,15 +116,15 @@
           el.classList.add("in");
           if (el.classList.contains("skill-card")) fillBars(el);
           if (el.classList.contains("skills-grid")) el.querySelectorAll(".skill-card").forEach(fillBars);
-          io.unobserve(el);
+          revealObserver.unobserve(el);
         });
       },
       { threshold: 0.18 }
     );
-    revealEls.forEach((el) => io.observe(el));
+    document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
     // 技能网格整体兜底（避免卡片未单独触发）
     const skillsGrid = document.querySelector(".skills-grid");
-    if (skillsGrid) io.observe(skillsGrid);
+    if (skillsGrid) revealObserver.observe(skillsGrid);
   } else {
     revealAll();
   }
@@ -182,36 +193,132 @@
     });
   }
 
-  /* ---------- GitHub 实时统计（直连官方 API，无第三方图片依赖） ---------- */
-  function renderGitHubStats() {
+  /* ========================================================
+     GitHub 实时同步（直连官方 API，数字不写死）
+     项目列表 / 统计面板 / 语言分布 / 统计条全部动态渲染；
+     徽章与贡献图为服务端实时生成的动态图片。
+     ======================================================== */
+  const GH_USER = "zsl99a";
+  const GH_HOME = "https://github.com/" + GH_USER;
+  const esc = (s) =>
+    String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // 精选仓库介绍（仅文案；Star / 语言 / 更新时间 / 仓库列表全部来自 API）
+  const PROJ_DESC = {
+    "zsl99a.github.io": "个人主页仓库：纯静态实现，GitHub 数据实时同步。",
+    websocket: "高性能异步 WebSocket 客户端库：自动重连(指数退避)、心跳、消息路由、事件驱动，基于 Tokio。",
+    netz: "高性能网络层（netz-core / netz-quic），面向低延迟通信与闪电网络方向的基础组件。",
+    "quark-im": "基于 Rust 的即时通讯系统：消息处理模块、链路测速与路径查找，附时序图设计文档。",
+    ztopic: '"Helium" 主题消息组件：Rust 消息中间件方向的探索。',
+    nitrogen: "Rust 网络 / QUIC 工具库：workspace 结构（macro / quic / utils / extra），含 CI 工作流。",
+    "oxygen-ui": "Leptos + Axum Rust 全栈 Web 模板：Rust 编译至 WASM 的前端工程化实践。",
+    nvim: "个人 Neovim 配置：沉淀高频开发工作流与键位体系，提升日常编码效率。",
+  };
+
+  // GitHub 官方语言色（与代码仓库展示一致）
+  const LANG_COLOR = {
+    Rust: "#dea584",
+    Lua: "#59a6d6",
+    TypeScript: "#3178c6",
+    JavaScript: "#f1e05a",
+    HTML: "#e34c26",
+    CSS: "#563d7c",
+    Vue: "#41b883",
+    Go: "#00add8",
+    Python: "#3572a5",
+  };
+
+  const fetchJSON = (url) =>
+    fetch(url, { headers: { Accept: "application/vnd.github+json" } }).then((r) => {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    });
+
+  const fmt = (n) => (n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n));
+
+  // 数字递增动画（尊重减少动效偏好）
+  const animateNumber = (el, target) => {
+    if (reduceMotion) { el.textContent = fmt(target); return; }
+    const t0 = performance.now();
+    const dur = 900;
+    const step = (t) => {
+      const p = Math.min((t - t0) / dur, 1);
+      el.textContent = fmt(Math.round(target * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  /* ---------- 项目卡片（动态渲染） ---------- */
+  function renderProjects(repos) {
+    const grid = document.getElementById("projects-grid");
+    const loading = document.getElementById("projects-loading");
+    if (!grid) return;
+    if (loading) loading.remove();
+
+    // 排除主页仓库自身与 fork；排序：有语言标识 > 精选描述 > Star > 更新时间
+    const mine = repos
+      .filter((r) => !r.fork && r.name !== "zsl99a.github.io")
+      .sort((a, b) =>
+        ((b.language ? 1 : 0) - (a.language ? 1 : 0)) ||
+        ((PROJ_DESC[b.name] ? 1 : 0) - (PROJ_DESC[a.name] ? 1 : 0)) ||
+        (b.stargazers_count - a.stargazers_count) ||
+        (new Date(b.pushed_at) - new Date(a.pushed_at))
+      )
+      .slice(0, 6);
+
+    grid.innerHTML = mine
+      .map((r) => {
+        const lang = r.language || "其他";
+        const color = LANG_COLOR[lang] || "var(--accent-3)";
+        const desc = PROJ_DESC[r.name] || r.description || "开源项目，持续迭代中。";
+        return (
+          '<a class="proj reveal" href="' + GH_HOME + "/" + r.name +
+          '" target="_blank" rel="noopener">' +
+          '<div class="proj-top"><h3>' + esc(r.name) + '</h3><span class="lang">' +
+          '<i class="dot" style="background:' + color + '"></i>' + esc(lang) + "</span></div>" +
+          "<p>" + esc(desc) + "</p>" +
+          '<div class="proj-foot"><span class="star">★ ' + r.stargazers_count + "</span>" +
+          '<span class="go">查看仓库 →</span></div></a>'
+        );
+      })
+      .join("") +
+      '<a class="proj reveal" href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">' +
+      '<div class="proj-top"><h3>更多仓库 →</h3><span class="lang">GitHub</span></div>' +
+      "<p>访问 GitHub 主页查看全部 " + repos.filter((r) => !r.fork).length + " 个原创仓库（含 fork 共 " + repos.length + " 个）。</p>" +
+      '<div class="proj-foot"><span class="star">profile</span><span class="go">前往 →</span></div></a>';
+
+    observeReveal(grid);
+  }
+
+  /* ---------- 统计面板 + 语言分布 + 统计条 ---------- */
+  function renderGitHubStats(u, repos) {
     const statsEl = document.getElementById("gh-stats");
     const langsEl = document.getElementById("gh-langs");
+    const stripEl = document.getElementById("gh-strip");
     if (!statsEl || !langsEl) return;
-    const USER = "zsl99a";
-    const esc = (s) =>
-      String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-    Promise.all([
-      fetch("https://api.github.com/users/" + USER, { headers: { Accept: "application/vnd.github+json" } }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
-      fetch("https://api.github.com/users/" + USER + "/repos?per_page=100").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
-    ])
-      .then(([u, repos]) => {
-        const stars = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
-        statsEl.innerHTML =
-          '<h3>GitHub 概览</h3><div class="gh-metrics">' +
-          '<div class="gh-metric"><b>' + u.public_repos + "</b><span>公开仓库</span></div>" +
-          '<div class="gh-metric"><b>' + stars + "</b><span>累计 Star</span></div>" +
-          '<div class="gh-metric"><b>' + u.followers + "</b><span>Followers</span></div>" +
-          '<div class="gh-metric"><b>' + u.following + "</b><span>Following</span></div>" +
-          "</div>";
+    const stars = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
+    const bio = u.bio ? '<p class="gh-bio">' + esc(u.bio) + "</p>" : "";
 
-        const counts = {};
-        repos.forEach((r) => { const l = r.language; if (l) counts[l] = (counts[l] || 0) + 1; });
-        const total = Object.values(counts).reduce((a, b) => a + b, 0);
-        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
-        langsEl.innerHTML =
-          "<h3>主要语言</h3>" +
-          sorted
+    statsEl.innerHTML =
+      "<h3>GitHub 概览</h3>" + bio + '<div class="gh-metrics">' +
+      '<div class="gh-metric"><b data-n="' + u.public_repos + '">0</b><span>公开仓库</span></div>' +
+      '<div class="gh-metric"><b data-n="' + stars + '">0</b><span>累计 Star</span></div>' +
+      '<div class="gh-metric"><b data-n="' + u.followers + '">0</b><span>Followers</span></div>' +
+      '<div class="gh-metric"><b data-n="' + u.following + '">0</b><span>Following</span></div>' +
+      "</div>";
+    statsEl.querySelectorAll("b[data-n]").forEach((b) => animateNumber(b, +b.dataset.n));
+
+    // 语言分布按仓库主语言计数（fork 不计入）
+    const counts = {};
+    repos.forEach((r) => { if (!r.fork) { const l = r.language; if (l) counts[l] = (counts[l] || 0) + 1; } });
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    langsEl.innerHTML =
+      "<h3>主要语言</h3>" +
+      (sorted.length
+        ? sorted
             .map(([name, n]) => {
               const pct = total ? Math.round((n / total) * 100) : 0;
               return (
@@ -220,9 +327,34 @@
                 '<div class="gh-lang-bar"><i style="width:' + pct + '%"></i></div></div>'
               );
             })
-            .join("");
-      })
-      .catch(() => {});
+            .join("")
+        : '<span class="gh-loading">暂无数据</span>');
+
+    // 动态统计条
+    const topLang = sorted[0] ? sorted[0][0] : "—";
+    const latest = repos
+      .filter((r) => !r.fork && r.name !== "zsl99a.github.io")
+      .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))[0];
+    stripEl.innerHTML =
+      '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">📦 ' + u.public_repos + " 个公开仓库</a>" +
+      '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">⭐ 累计 ' + stars + " Star</a>" +
+      '<a href="' + GH_HOME + '" target="_blank" rel="noopener">👥 ' + u.followers + " Followers</a>" +
+      '<a href="' + GH_HOME + '?tab=repositories" target="_blank" rel="noopener">🦀 主力语言：' + esc(topLang) + "</a>" +
+      (latest ? '<a href="' + GH_HOME + "/" + latest.name + '" target="_blank" rel="noopener">🚀 最近更新：' + esc(latest.name) + "</a>" : "");
   }
-  renderGitHubStats();
+
+  /* ---------- 入口：拉取用户 + 仓库数据并渲染 ---------- */
+  Promise.all([
+    fetchJSON("https://api.github.com/users/" + GH_USER),
+    fetchJSON("https://api.github.com/users/" + GH_USER + "/repos?per_page=100&sort=updated"),
+  ])
+    .then(([u, repos]) => {
+      renderProjects(repos);
+      renderGitHubStats(u, repos);
+    })
+    .catch(() => {
+      document.querySelectorAll(".gh-loading").forEach((el) => {
+        el.textContent = "同步失败，请稍后刷新重试";
+      });
+    });
 })();

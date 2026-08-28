@@ -207,55 +207,9 @@
     <section class="section" id="projects">
       <div class="container">
         <h2 class="section-title reveal"><span class="num">04</span>精选项目</h2>
-        <p class="reveal projects-note">以下为 GitHub 公开仓库，反映我在 Rust 系统编程、实时网络通信与全栈方向的持续探索。</p>
-        <div class="projects-grid" id="projects-grid">
-          <a class="proj reveal" href="https://github.com/zsl99a/websocket" target="_blank" rel="noopener">
-            <div class="proj-top"><h3>websocket</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
-            <p>高性能异步 WebSocket 客户端库：自动重连(指数退避)、心跳、消息路由、事件驱动，基于 Tokio。</p>
-            <div class="proj-foot"><span class="star">★ 0</span><span class="go">查看仓库 →</span></div>
-          </a>
-
-          <a class="proj reveal" href="https://github.com/zsl99a/netz" target="_blank" rel="noopener">
-            <div class="proj-top"><h3>netz</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
-            <p>高性能网络层（netz-core / netz-quic），面向低延迟通信与闪电网络方向的基础组件。</p>
-            <div class="proj-foot"><span class="star">★ 0</span><span class="go">查看仓库 →</span></div>
-          </a>
-
-          <a class="proj reveal" href="https://github.com/zsl99a/quark-im" target="_blank" rel="noopener">
-            <div class="proj-top"><h3>quark-im</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
-            <p>基于 Rust 的即时通讯系统：消息处理模块、链路测速与路径查找，附时序图设计文档。</p>
-            <div class="proj-foot"><span class="star">★ 1</span><span class="go">查看仓库 →</span></div>
-          </a>
-
-          <a class="proj reveal" href="https://github.com/zsl99a/ztopic" target="_blank" rel="noopener">
-            <div class="proj-top"><h3>ztopic</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
-            <p>"Helium" 主题消息组件：Rust 消息中间件方向的探索，仓库 Star 数最高的原创项目。</p>
-            <div class="proj-foot"><span class="star">★ 2</span><span class="go">查看仓库 →</span></div>
-          </a>
-
-          <a class="proj reveal" href="https://github.com/zsl99a/nitrogen" target="_blank" rel="noopener">
-            <div class="proj-top"><h3>nitrogen</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
-            <p>Rust 网络/QUIC 工具库：workspace 结构（macro / quic / utils / extra），含 CI 工作流。</p>
-            <div class="proj-foot"><span class="star">★ 1</span><span class="go">查看仓库 →</span></div>
-          </a>
-
-          <a class="proj reveal" href="https://github.com/zsl99a/oxygen-ui" target="_blank" rel="noopener">
-            <div class="proj-top"><h3>oxygen-ui</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
-            <p>Leptos + Axum Rust 全栈 Web 模板：Rust 编译至 WASM 的前端工程化实践。</p>
-            <div class="proj-foot"><span class="star">★ 0</span><span class="go">查看仓库 →</span></div>
-          </a>
-
-          <a class="proj reveal" href="https://github.com/zsl99a/nvim" target="_blank" rel="noopener">
-            <div class="proj-top"><h3>nvim</h3><span class="lang"><i class="dot lua"></i>Lua</span></div>
-            <p>个人 Neovim 配置：沉淀高频开发工作流与键位体系，提升日常编码效率。</p>
-            <div class="proj-foot"><span class="star">★ 0</span><span class="go">查看仓库 →</span></div>
-          </a>
-
-          <a class="proj reveal" href="https://github.com/zsl99a" target="_blank" rel="noopener">
-            <div class="proj-top"><h3>更多仓库 →</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
-            <p>casbin_rbatis_adapter、tokio(fork) 等。访问 GitHub 主页查看全部 11+ 公开仓库。</p>
-            <div class="proj-foot"><span class="star">profile</span><span class="go">前往 →</span></div>
-          </a>
+        <p class="reveal projects-note">以下仓库列表实时同步自 GitHub API，新增仓库与 Star 变化无需手动更新。</p>
+        <div class="projects-grid" id="projects-grid" aria-live="polite">
+          <span class="gh-loading" id="projects-loading">正在从 GitHub 同步仓库…</span>
         </div>
       </div>
     </section>
@@ -264,12 +218,21 @@
     <section class="section" id="github">
       <div class="container">
         <h2 class="section-title reveal"><span class="num">05</span>GitHub 技术影响力</h2>
-        <p class="reveal projects-note">数据实时取自 GitHub，公开透明。</p>
-        <div class="github-strip reveal">
-          <a href="https://github.com/zsl99a?tab=repositories" target="_blank" rel="noopener">📦 11+ 公开仓库（多数 Rust）</a>
-          <a href="https://github.com/zsl99a" target="_blank" rel="noopener">🔥 近一年 352 次贡献</a>
-          <a href="https://github.com/zsl99a?tab=repositories" target="_blank" rel="noopener">🦀 主力语言：Rust</a>
+        <p class="reveal projects-note">统计数字实时取自 <b>GitHub API</b>，随仓库动态自动同步，公开透明。</p>
+        <div class="github-badges reveal" aria-label="GitHub 动态徽章">
+          <img src="https://img.shields.io/github/followers/zsl99a?style=for-the-badge&amp;logo=github&amp;logoColor=white&amp;label=Followers&amp;color=36E0C8" alt="GitHub Followers" loading="lazy" />
+          <img src="https://img.shields.io/github/stars/zsl99a?style=for-the-badge&amp;logo=github&amp;logoColor=white&amp;label=Stars&amp;color=7C5CFF" alt="GitHub Stars" loading="lazy" />
+          <img src="https://img.shields.io/github/last-commit/zsl99a/zsl99a.github.io?style=for-the-badge&amp;label=%E6%9C%80%E8%BF%91%E4%BA%A4%E4%BB%A3&amp;color=F5A623" alt="主页最近提交" loading="lazy" />
         </div>
+        <div class="github-grid reveal">
+          <div class="gh-panel" id="gh-stats"><span class="gh-loading">正在同步 GitHub 数据…</span></div>
+          <div class="gh-panel" id="gh-langs"><span class="gh-loading">正在计算语言分布…</span></div>
+        </div>
+        <div class="github-strip reveal" id="gh-strip"></div>
+        <div class="github-cards reveal">
+          <img class="gh-card" src="https://streak-stats.demolab.com/?user=zsl99a&amp;theme=tokyonight&amp;hide_border=true" alt="zsl99a 的贡献热力统计：总贡献 / 当前连击 / 最长连击" loading="lazy" />
+        </div>
+        <p class="reveal projects-note gh-note">徽章与贡献图为服务端实时生成的动态图片（GitHub 个人主页 README 中经 camo.githubusercontent.com 代理渲染），数据自动保持最新。</p>
       </div>
     </section>
 
