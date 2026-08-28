@@ -1,27 +1,32 @@
-# zsl99a · 个人主页
+# zsl99a
 
-👋 欢迎来到我的 GitHub Pages 个人主页：**[https://zsl99a.github.io](https://zsl99a.github.io)**
+**前端 / 全栈工程师 · 12 年全栈交付经验** · [zsl99a.github.io](https://zsl99a.github.io)
 
-基于真实简历与 GitHub 公开仓库数据构建的暗色「量化终端」风格单页站点。纯静态（HTML / CSS / JS），**无需构建步骤**，直接由 GitHub Pages 托管。
+👋 欢迎来到我的个人主页仓库。这里托管着我的在线简历与作品集 ——
+一个暗色「量化终端」风格的单页站点，与我近 5 年深耕的 Rust 高频交易系统一脉相承。
 
-## 目录结构
+## 我是谁
 
-| 文件 | 说明 |
-|------|------|
-| `index.html` | 主页（Hero / 关于 / 技能 / 经历 / 项目 / GitHub / 联系） |
-| `assets/css/style.css` | 暗色霓虹主题样式、响应式布局、动画 |
-| `assets/js/main.js` | 交互：粒子背景 / 打字机 / 滚动揭示 / 数字递增 / 技能条 |
-| `assets/img/favicon.svg` | 站点图标 |
-| `profile/README.md` | GitHub 个人首页 README（部署到 `zsl99a/zsl99a` 仓库） |
-| `profile/.github/workflows/snake.yml` | 贡献蛇自动生成工作流 |
+- 以 **React** 为起点，逐步拓展至 Vue、小程序与 Node.js 等主流生态，具备前端、后端到客户端的多端交付能力
+- 近 5 年以独立开发者身份深耕 **Rust 底层与高频交易系统**，完整经历过从需求分析、架构设计到线上部署的全生命周期
+- 近两年将 **AI 辅助编程**深度融入工作流，在严格保障代码质量的前提下，显著提升交付效率
 
-## 本地预览
+## 我做什么
 
-```bash
-python3 -m http.server 8000
-# 浏览器打开 http://localhost:8000
-```
+- 🦀 **底层系统**：用 Rust(Axum / Tokio) 从零构建微秒级高频交易系统 —— 行情聚合、本地订单簿(LOB)、多策略并行引擎、风控与监控全链路，7×24h 稳定运行
+- ⚛️ **前端架构**：React / Vue / TypeScript，组件库封装、工程化治理、首屏与 SEO 极致优化、老旧系统现代化重构
+- 🌐 **高并发后端**：实时数据流、WebSocket 多源聚合、分布式状态同步、PostgreSQL
+- 💰 **实战战绩**：Node.js + RxJS 套利策略实盘运行 7 个月、累计数十万美元收益，是转向 Rust 高频系统的直接驱动力
 
-## 部署
+> 核心聚焦：**老旧系统现代化重构 · 前端工程化体系治理 · 高并发性能攻坚 · 全链路业务落地** —— 致力于解决企业级系统的核心难题。
 
-推送至 `main` 分支后，在仓库 **Settings → Pages** 中选择 `main` 分支根目录作为源即可（默认 `*.github.io` 仓库已开启）。
+## 更多入口
+
+- 🏠 在线主页：[zsl99a.github.io](https://zsl99a.github.io)
+- 💻 GitHub：[github.com/zsl99a](https://github.com/zsl99a)
+- 📧 Email：[zsl99a@live.com](mailto:zsl99a@live.com)
+- 💬 微信：zsl99a
+
+---
+
+<sub>本站为纯静态实现（HTML / CSS / JS，无构建步骤）。`profile/` 目录内含我的 GitHub 个人首页 README 及贡献蛇工作流。</sub>
