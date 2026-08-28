@@ -929,6 +929,8 @@ a:focus-visible, button:focus-visible {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: stretch;
+  text-align: left;
   gap: 22px;
   padding: 22px 24px;
   border-radius: 18px;
@@ -938,6 +940,9 @@ a:focus-visible, button:focus-visible {
   color: inherit;
   font: inherit;
   width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
   transition: 0.28s var(--ease);
   cursor: pointer;
 }
@@ -993,7 +998,10 @@ a:focus-visible, button:focus-visible {
 .contact-item-body {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
   gap: 6px;
+  width: 100%;
 }
 .contact-label {
   font-family: var(--font-mono);
@@ -1001,6 +1009,7 @@ a:focus-visible, button:focus-visible {
   letter-spacing: 0.08em;
   color: var(--muted);
   font-weight: 500;
+  text-align: left;
 }
 .contact-val {
   font-family: var(--font-mono);
@@ -1008,6 +1017,7 @@ a:focus-visible, button:focus-visible {
   font-weight: 600;
   color: var(--text);
   word-break: break-all;
+  text-align: left;
   transition: 0.2s var(--ease);
 }
 .contact-item:hover .contact-val {
