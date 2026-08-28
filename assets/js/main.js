@@ -59,11 +59,11 @@
   const typedEl = document.getElementById("typed");
   const phrases = [
     "6 年 React 前端架构与深度演进",
-    "4 年 Rust 底层高并发与异步系统",
-    "NestJS / Express / Node.js 全栈交付",
-    "老旧系统重构 · 性能瓶颈攻坚",
+    "4 年 Rust + Axum 高性能后端实战",
+    "Tokio 异步并发 · WebSocket 实时网关",
+    "老旧系统现代化重构 · 性能瓶颈攻坚",
     "自研通用组件库 · 前端工程化基建",
-    "用 AI 提效，质量自己把关",
+    "具备 Node.js / Vue 全栈交付能力",
     "先想清楚问题，再动手写代码",
   ];
   if (typedEl && !reduceMotion) {
