@@ -272,14 +272,15 @@
     requestAnimationFrame(step);
   };
 
+  // GitHub Popular Repositories 排序规则：Stars 降序 > Forks 降序 > 最新更新时间 降序
   const sortMine = (repos) =>
     repos
       .filter((r) => !r.fork && r.name !== "zsl99a.github.io" && r.name !== "zsl99a")
       .sort((a, b) =>
-        ((b.language ? 1 : 0) - (a.language ? 1 : 0)) ||
-        ((b.description ? 1 : 0) - (a.description ? 1 : 0)) ||
         (b.stargazers_count - a.stargazers_count) ||
-        (new Date(b.pushed_at) - new Date(a.pushed_at))
+        (b.forks_count - a.forks_count) ||
+        (new Date(b.pushed_at) - new Date(a.pushed_at)) ||
+        a.name.localeCompare(b.name)
       );
 
   /* ---------- 精选项目：卡片 + 语言构成条 + 仓库指标（语言数据由装配层提供） ---------- */
