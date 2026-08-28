@@ -4,8 +4,8 @@
  * 由 .github/workflows/sync-github.yml 每小时运行（GITHUB_TOKEN，配额 1000/h），
  * 页面改为加载这份静态 JSON，访问者不再直连 api.github.com，彻底规避限流。
  */
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 const GH_USER = "zsl99a";
 const TOKEN = process.env.GH_TOKEN || "";
