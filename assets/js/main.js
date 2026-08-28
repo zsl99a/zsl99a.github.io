@@ -434,42 +434,43 @@
     const items = [];
     let lastKey = null;
     for (const e of evs || []) {
-          const repo = e.repo ? e.repo.name.replace(GH_USER + "/", "") : "";
-          // 仅 Star/Fork 类相邻重复合并，Push 每次保留
-          const key = e.type + "|" + repo + (e.type === "PushEvent" ? "|" + e.created_at : "");
-          if (key === lastKey) continue;
-          lastKey = key;
-          const style = EV_STYLE[e.type] || ["📌", "更新了 "];
-          let text = style[1] + "<b>" + esc(repo || "GitHub") + "</b>";
-          if (e.type === "PushEvent") {
-            const commits = (e.payload && e.payload.commits) || [];
-            text = (commits.length ? "推送 " + commits.length + " 次提交至 " : "推送了代码至 ") +
-              "<b>" + esc(repo) + "</b>" +
-              (commits[0] ? "：" + esc(commits[0].message.replace(/\n.*/, "").slice(0, 42)) : "");
-          } else if (e.type === "CreateEvent") {
-            const t = e.payload && e.payload.ref_type;
-            text = t === "repository"
-              ? "创建了仓库 <b>" + esc(repo) + "</b>"
-              : "在 <b>" + esc(repo) + "</b> 创建了 " + esc(e.payload && e.payload.ref ? e.payload.ref : "分支");
-          } else if (e.type === "IssuesEvent" && e.payload) {
-            text = "#" + e.payload.issue.number + " " + e.payload.action + "（<b>" + esc(repo) + "</b>）";
-          } else if (e.type === "ReleaseEvent" && e.payload) {
-            text = "发布 " + esc(e.payload.release.tag_name) + "（<b>" + esc(repo) + "</b>）";
-          }
-          items.push({ text: text, time: timeAgo(e.created_at) });
-          if (items.length >= 7) break;
-        }
-        el.innerHTML =
-          "<h3>最近公开动态</h3>" +
-          (items.length
-            ? items
-                .map((i) =>
-                  '<div class="gh-activity-item"><span class="a-txt">' + i.text +
-                  '</span><span class="a-time">' + i.time + "</span></div>"
-                )
-                .join("") +
-              '<a class="gh-activity-more" href="' + GH_HOME + '" target="_blank" rel="noopener">前往 GitHub 主页 →</a>'
-            : '<span class="gh-loading">暂无公开动态</span>');
+      const rawRepo = typeof e.repo === "string" ? e.repo : (e.repo && e.repo.name) || "";
+      const repo = rawRepo.replace(new RegExp("^" + GH_USER + "/"), "");
+      // 仅 Star/Fork 类相邻重复合并，Push 每次保留
+      const key = e.type + "|" + repo + (e.type === "PushEvent" ? "|" + e.created_at : "");
+      if (key === lastKey) continue;
+      lastKey = key;
+      const style = EV_STYLE[e.type] || ["📌", "更新了 "];
+      let text = style[1] + "<b>" + esc(repo || "GitHub") + "</b>";
+      if (e.type === "PushEvent") {
+        const commits = (e.payload && e.payload.commits) || [];
+        text = (commits.length ? "推送 " + commits.length + " 次提交至 " : "推送了代码至 ") +
+          "<b>" + esc(repo) + "</b>" +
+          (commits[0] && commits[0].message ? "：" + esc(commits[0].message.replace(/\n.*/, "").slice(0, 42)) : "");
+      } else if (e.type === "CreateEvent") {
+        const t = e.payload && e.payload.ref_type;
+        text = t === "repository"
+          ? "创建了仓库 <b>" + esc(repo) + "</b>"
+          : "在 <b>" + esc(repo) + "</b> 创建了 " + esc(e.payload && e.payload.ref ? e.payload.ref : "分支");
+      } else if (e.type === "IssuesEvent" && e.payload && e.payload.issue) {
+        text = "#" + e.payload.issue.number + " " + (e.payload.action || "更新") + "（<b>" + esc(repo) + "</b>）";
+      } else if (e.type === "ReleaseEvent" && e.payload && e.payload.release) {
+        text = "发布 " + esc(e.payload.release.tag_name) + "（<b>" + esc(repo) + "</b>）";
+      }
+      items.push({ text: text, time: timeAgo(e.created_at) });
+      if (items.length >= 7) break;
+    }
+    el.innerHTML =
+      "<h3>最近公开动态</h3>" +
+      (items.length
+        ? items
+            .map((i) =>
+              '<div class="gh-activity-item"><span class="a-txt">' + i.text +
+              '</span><span class="a-time">' + i.time + "</span></div>"
+            )
+            .join("") +
+          '<a class="gh-activity-more" href="' + GH_HOME + '" target="_blank" rel="noopener">前往 GitHub 主页 →</a>'
+        : '<span class="gh-loading">暂无公开动态</span>');
   }
 
   /* ---------- 数据装配：统一渲染入口 ---------- */
