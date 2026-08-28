@@ -6,10 +6,14 @@
  */
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const GH_USER = "zsl99a";
 const TOKEN = process.env.GH_TOKEN || "";
-const OUT = path.join(import.meta.dirname, "..", "assets", "data", "github.json");
+const OUT = path.join(__dirname, "..", "assets", "data", "github.json");
 
 const headers = { Accept: "application/vnd.github+json" };
 if (TOKEN) headers.Authorization = "Bearer " + TOKEN;

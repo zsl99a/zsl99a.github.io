@@ -2,9 +2,14 @@ name: Sync GitHub Data
 
 on:
   schedule:
-    # 每小时整点同步一次
-    - cron: "0 * * * *"
+    # 每 2 小时定时同步一次
+    - cron: "0 */2 * * *"
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/**"
 
 permissions:
   contents: write
@@ -13,9 +18,15 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: 检出仓库
+        uses: actions/checkout@v4
 
-      - name: 抓取 GitHub API 并生成静态数据
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 抓取 GitHub API 并生成静态缓存数据
         run: node scripts/sync-github.mjs
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -26,8 +37,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/data/github.json
           if git diff --cached --quiet; then
-            echo "数据无变化，跳过提交"
+            echo "GitHub 数据无变化，跳过提交"
           else
-            git commit -m "chore: 同步 GitHub 数据"
+            git commit -m "chore: 定时同步 GitHub 静态缓存数据"
             git push
           fi

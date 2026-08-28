@@ -232,27 +232,6 @@
     Makefile: "#427819",
   };
 
-  const fetchJSON = (url) => {
-    // 15 分钟缓存：避免刷新页面对子请求（languages ×N、events）重复消耗未认证配额（60/h）
-    try {
-      const raw = localStorage.getItem("gh:" + url);
-      if (raw) {
-        const { t, d } = JSON.parse(raw);
-        if (Date.now() - t < 15 * 60 * 1000) return Promise.resolve(d);
-        localStorage.removeItem("gh:" + url);
-      }
-    } catch (e) { /* 隐私模式或存储不可用，直接走网络 */ }
-    return fetch(url, { headers: { Accept: "application/vnd.github+json" } })
-      .then((r) => {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
-      .then((d) => {
-        try { localStorage.setItem("gh:" + url, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {}
-        return d;
-      });
-  };
-
   const fmt = (n) => (n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n));
   const starsOf = (repos) => repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
   const forksOf = (repos) => repos.reduce((s, r) => s + (r.forks_count || 0), 0);
@@ -486,45 +465,29 @@
     renderActivity(events || null);
   }
 
-  /* ---------- 兜底：静态数据缺失时直连官方 API（带 15 分钟缓存） ---------- */
-  function fallbackDirect() {
-    Promise.all([
-      fetchJSON("https://api.github.com/users/" + GH_USER),
-      fetchJSON("https://api.github.com/users/" + GH_USER + "/repos?per_page=100&sort=updated"),
-    ])
-      .then(([u, repos]) => {
-        const langMap = {};
-        const mine = sortMine(repos).slice(0, 8);
-        return Promise.all(
-          mine.map((r) =>
-            r.language ? fetchJSON(r.languages_url).catch(() => null) : Promise.resolve(null)
-          )
-        ).then((rows) => {
-          mine.forEach((r, i) => { if (rows[i] && typeof rows[i] === "object") langMap[r.name] = rows[i]; });
-          return { user: u, repos: repos, languages: langMap };
-        });
-      })
-      .then(applyData)
-      .then(() =>
-        fetchJSON("https://api.github.com/users/" + GH_USER + "/events/public?per_page=30")
-          .then((evs) => renderActivity(evs))
-          .catch(() => renderActivity(null))
-      )
-      .catch(() => {
-        document.querySelectorAll(".gh-loading").forEach((el) => {
-          el.textContent = "GitHub API 配额受限，请稍后刷新重试";
-        });
-      });
-  }
-
-  /* ---------- 入口：内置静态数据优先（每小时由 Actions 同步），失败时直连 API 兜底 ---------- */
+  /* ---------- 入口：纯静态缓存驱动（由 GitHub Actions 定时同步，彻底杜绝 API 限流） ---------- */
+  const CACHE_KEY = "zsl99a_gh_data";
   fetch("assets/data/github.json")
     .then((r) => {
       if (!r.ok) throw new Error("HTTP " + r.status);
       return r.json();
     })
-    .then((data) => applyData(data))
-    .catch(() => fallbackDirect());
+    .then((data) => {
+      applyData(data);
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+    })
+    .catch(() => {
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          applyData(JSON.parse(cached));
+          return;
+        }
+      } catch (e) {}
+      document.querySelectorAll(".gh-loading").forEach((el) => {
+        el.textContent = "数据同步中，请稍后刷新";
+      });
+    });
 })();
 
 /* ========================================================
