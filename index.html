@@ -19,7 +19,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
@@ -66,27 +66,33 @@
     <!-- ================= HERO ================= -->
     <section class="hero" id="home">
       <div class="container hero-inner">
+        <!-- 左侧核心主张 -->
         <div class="hero-copy">
           <div class="hero-badge">
             <span class="dot"></span>
-            <span class="badge-txt">前端架构 · 全栈工程 · 独立开发</span>
+            <span class="badge-txt">资深前端架构 · 全栈工程 · 独立开发</span>
           </div>
+
           <h1 class="hero-h1">
-            <span class="hero-name grad">zsl99a</span>
+            <span class="hero-name">zsl99a</span>
             <span class="hero-title">资深前端 / 全栈工程师</span>
           </h1>
-          <p class="hero-sub">深耕 <span class="accent">React / Vue / TypeScript</span> 现代前端架构与 <span class="accent">NestJS / Express</span> 全栈交付，兼具 <span class="accent">Rust</span> 底层系统与高性能异步并发实战沉淀</p>
-          <p class="hero-typed"><span id="typed"></span><span class="caret">▌</span></p>
-          <div class="hero-tags">
-            <span class="tag"><span class="tag-dot d1"></span>React / Vue 架构</span>
-            <span class="tag"><span class="tag-dot d2"></span>NestJS / Express</span>
-            <span class="tag"><span class="tag-dot d3"></span>Rust 底层纵深</span>
-            <span class="tag"><span class="tag-dot d4"></span>工程治理 / AI 提效</span>
+
+          <p class="hero-sub">
+            深耕 <strong class="accent">React / Vue / TypeScript</strong> 现代前端架构与 <strong class="accent">NestJS / Express</strong> 全栈交付，兼具 <strong class="accent">Rust</strong> 底层系统与高性能异步并发实战沉淀。
+          </p>
+
+          <div class="hero-typed-box">
+            <span class="typed-prompt">❯</span>
+            <span id="typed" class="typed-text"></span>
+            <span class="caret">▌</span>
           </div>
+
           <div class="hero-cta">
-            <a href="#projects" class="btn btn-primary">查看项目 <span class="btn-arrow">→</span></a>
+            <a href="#projects" class="btn btn-primary">查看精选项目 <span class="btn-arrow">→</span></a>
             <a href="#contact" class="btn btn-ghost">联系我</a>
           </div>
+
           <div class="hero-social">
             <a class="hs-link" href="https://github.com/zsl99a" target="_blank" rel="noopener">
               <span class="hs-ico">GitHub</span><span class="hs-txt">github.com/zsl99a</span>
@@ -99,6 +105,48 @@
             <a class="hs-link" href="#contact">
               <span class="hs-ico">WeChat</span><span class="hs-txt">zsl99a</span>
             </a>
+          </div>
+        </div>
+
+        <!-- 右侧全栈工程生态 Bento 矩阵 -->
+        <div class="hero-matrix" aria-label="核心能力矩阵">
+          <div class="matrix-glow" aria-hidden="true"></div>
+          <div class="matrix-grid">
+            <div class="matrix-card glass tilt">
+              <div class="mc-head">
+                <span class="mc-icon">⚛️</span>
+                <span class="mc-badge">前端架构</span>
+              </div>
+              <h3 class="mc-title">React · Vue · TypeScript</h3>
+              <p class="mc-desc">自研通用组件库 · 首屏与打包极致优化 · 复杂多端交付</p>
+            </div>
+
+            <div class="matrix-card glass tilt">
+              <div class="mc-head">
+                <span class="mc-icon">🚀</span>
+                <span class="mc-badge">全栈后端</span>
+              </div>
+              <h3 class="mc-title">NestJS · Express · Node.js</h3>
+              <p class="mc-desc">企业级模块化 BFF · WebSocket 实时通信 · PostgreSQL</p>
+            </div>
+
+            <div class="matrix-card glass tilt">
+              <div class="mc-head">
+                <span class="mc-icon">🦀</span>
+                <span class="mc-badge">系统纵深</span>
+              </div>
+              <h3 class="mc-title">Rust · Tokio · Axum</h3>
+              <p class="mc-desc">高性能异步并发 · 内存安全与系统级性能思维 · 自研底座</p>
+            </div>
+
+            <div class="matrix-card glass tilt">
+              <div class="mc-head">
+                <span class="mc-icon">🛠️</span>
+                <span class="mc-badge">攻坚治理</span>
+              </div>
+              <h3 class="mc-title">重构攻坚 · AI 深度提效</h3>
+              <p class="mc-desc">遗留系统现代化改造 · Sentry 异常监控 · 工业级质量把关</p>
+            </div>
           </div>
         </div>
       </div>
