@@ -231,11 +231,26 @@
     Makefile: "#427819",
   };
 
-  const fetchJSON = (url) =>
-    fetch(url, { headers: { Accept: "application/vnd.github+json" } }).then((r) => {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    });
+  const fetchJSON = (url) => {
+    // 15 分钟缓存：避免刷新页面对子请求（languages ×N、events）重复消耗未认证配额（60/h）
+    try {
+      const raw = localStorage.getItem("gh:" + url);
+      if (raw) {
+        const { t, d } = JSON.parse(raw);
+        if (Date.now() - t < 15 * 60 * 1000) return Promise.resolve(d);
+        localStorage.removeItem("gh:" + url);
+      }
+    } catch (e) { /* 隐私模式或存储不可用，直接走网络 */ }
+    return fetch(url, { headers: { Accept: "application/vnd.github+json" } })
+      .then((r) => {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then((d) => {
+        try { localStorage.setItem("gh:" + url, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {}
+        return d;
+      });
+  };
 
   const fmt = (n) => (n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n));
   const starsOf = (repos) => repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
@@ -491,7 +506,7 @@
     })
     .catch(() => {
       document.querySelectorAll(".gh-loading").forEach((el) => {
-        el.textContent = "同步失败，请稍后刷新重试";
+        el.textContent = "GitHub API 配额受限，请稍后刷新重试";
       });
     });
 })();
