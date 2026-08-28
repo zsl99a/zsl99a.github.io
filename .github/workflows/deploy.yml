@@ -1,0 +1,51 @@
+name: Deploy GitHub Pages with Data Cache
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # 每 2 小时自动重新抓取最新数据并部署，无需任何 Git 提交
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 抓取 GitHub 开放数据生成静态文件
+        run: node scripts/build-data.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 配置 GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上传 Pages 产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: 部署至 GitHub Pages CDN
+        id: deployment
+        uses: actions/deploy-pages@v4

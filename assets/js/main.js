@@ -482,7 +482,7 @@
     renderActivity(events || null);
   }
 
-  /* ---------- 数据获取与渲染：直连 GitHub API ---------- */
+  /* ---------- 数据获取与渲染：优先静态缓存加速，零限流秒开 ---------- */
   const CACHE_KEY = "zsl99a_gh_data";
 
   // 1. 优先读取本地缓存，保障首屏秒开体验
@@ -493,8 +493,22 @@
     }
   } catch (e) {}
 
-  // 2. 实时请求 GitHub API 获取最新数据
-  async function loadGitHubData() {
+  // 2. 加载静态缓存数据（由 GitHub Actions 部署产物提供，零 API 限流）
+  fetch("assets/data/github.json")
+    .then((r) => {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then((data) => {
+      applyData(data);
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+    })
+    .catch(() => {
+      // 本地预览或未构建环境时直连 API
+      loadFromGitHubAPI();
+    });
+
+  async function loadFromGitHubAPI() {
     try {
       const [u, reposRaw, eventsRaw] = await Promise.all([
         fetch("https://api.github.com/users/" + GH_USER).then((r) => (r.ok ? r.json() : null)),
@@ -502,7 +516,7 @@
         fetch("https://api.github.com/users/" + GH_USER + "/events/public?per_page=30").then((r) => (r.ok ? r.json() : [])),
       ]);
 
-      if (!u && (!reposRaw || !reposRaw.length)) throw new Error("API Fetch failed");
+      if (!u && (!reposRaw || !reposRaw.length)) return;
 
       const user = u ? {
         login: u.login,
@@ -565,8 +579,6 @@
       }
     }
   }
-
-  loadGitHubData();
 })();
 
 /* ========================================================
