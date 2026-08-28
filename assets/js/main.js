@@ -232,17 +232,16 @@
   const esc = (s) =>
     String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  // 精选仓库介绍（仅文案；Star / Fork / 语言 / 时间 / 仓库列表全部来自 API）
+  // 精选仓库介绍（文案结合技能演进阶段；Star / Fork / 语言 / 列表来自 API）
   const PROJ_DESC = {
     "zsl99a.github.io": "个人主页仓库：纯静态实现，GitHub 数据实时同步。",
-    websocket: "高性能异步 WebSocket 客户端库：自动重连(指数退避)、心跳、消息路由、事件驱动，基于 Tokio。",
-    netz: "高性能网络层（netz-core / netz-quic），面向低延迟通信与闪电网络方向的基础组件。",
-    "quark-im": "基于 Rust 的即时通讯系统：消息处理模块、链路测速与路径查找，附时序图设计文档。",
-    ztopic: '"Helium" 主题消息组件：Rust 消息中间件方向的探索。',
-    nitrogen: "Rust 网络 / QUIC 工具库：workspace 结构（macro / quic / utils / extra），含 CI 工作流。",
-    "oxygen-ui": "Leptos + Axum Rust 全栈 Web 模板：Rust 编译至 WASM 的前端工程化实践。",
-    nvim: "个人 Neovim 配置：沉淀高频开发工作流与键位体系，提升日常编码效率。",
-    blender_learn: "Blender 3D 建模与渲染学习记录。",
+    "oxygen-ui": "【WASM 全栈探索】Leptos + Axum 全栈 Web 模板：Rust 编译至 WASM 的前端工程实践。",
+    "quark-im": "【即时通信系统】基于 Rust 的即时通讯系统：消息路由处理、链路测速与路径拓扑查找。",
+    ztopic: "【消息中间件】\"Helium\" 主题消息组件：探索高吞吐发布订阅与异步解耦。",
+    netz: "【网络传输协议】高性能网络层（netz-core / netz-quic）：面向低延迟通信与基础组件架构。",
+    websocket: "【异步并发底座】高性能异步 WebSocket 客户端库：指数退避重连、心跳保活与事件驱动网关。",
+    padme: "【效能工具链】Shell 自动化工作流与环境工程基建。",
+    nvim: "【开发环境体系】个人 Neovim 配置：沉淀高频开发工作流与键位体系。",
   };
 
   // GitHub 官方语言色（与代码仓库展示一致）
@@ -285,15 +284,33 @@
     requestAnimationFrame(step);
   };
 
+  // 技能演进脉络排序：WASM全栈探索 → 即时通讯 → 消息中间件 → 网络传输协议 → 异步高并发底座
+  const EVOLUTION_ORDER = [
+    "oxygen-ui",
+    "quark-im",
+    "ztopic",
+    "netz",
+    "websocket",
+    "padme",
+    "nitrogen",
+    "nvim",
+  ];
+
   const sortMine = (repos) =>
     repos
       .filter((r) => !r.fork && r.name !== "zsl99a.github.io" && r.name !== "zsl99a")
-      .sort((a, b) =>
-        ((b.language ? 1 : 0) - (a.language ? 1 : 0)) ||
-        ((PROJ_DESC[b.name] ? 1 : 0) - (PROJ_DESC[a.name] ? 1 : 0)) ||
-        (b.stargazers_count - a.stargazers_count) ||
-        (new Date(b.pushed_at) - new Date(a.pushed_at))
-      );
+      .sort((a, b) => {
+        const idxA = EVOLUTION_ORDER.indexOf(a.name);
+        const idxB = EVOLUTION_ORDER.indexOf(b.name);
+        const orderA = idxA === -1 ? 999 : idxA;
+        const orderB = idxB === -1 ? 999 : idxB;
+        if (orderA !== orderB) return orderA - orderB;
+        return (
+          ((b.language ? 1 : 0) - (a.language ? 1 : 0)) ||
+          (b.stargazers_count - a.stargazers_count) ||
+          (new Date(b.pushed_at) - new Date(a.pushed_at))
+        );
+      });
 
   /* ---------- 精选项目：卡片 + 语言构成条 + 仓库指标（语言数据由装配层提供） ---------- */
   function renderProjects(repos, langMap) {
