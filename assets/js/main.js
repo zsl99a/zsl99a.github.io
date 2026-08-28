@@ -59,9 +59,10 @@
   const typedEl = document.getElementById("typed");
   const phrases = [
     "React / Vue / TypeScript 前端架构",
-    "Rust（Axum · Tokio）高并发系统",
-    "微秒级高频交易系统构建者",
+    "NestJS / Express / Node.js 全栈交付",
+    "Rust（Axum · Tokio）底层系统纵深",
     "老旧系统重构 · 性能瓶颈攻坚",
+    "自研通用组件库 · 前端工程化基建",
     "用 AI 提效，质量自己把关",
     "先想清楚问题，再动手写代码",
   ];

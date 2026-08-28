@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>zsl99a · 前端 / 全栈工程师 · Rust 高频交易系统构建者</title>
-  <meta name="description" content="zsl99a的个人主页：12 年全栈开发经验，React/Vue/TypeScript 前端架构，Rust(Axum/Tokio) 高并发与微秒级高频交易系统，AI 辅助编程践行者。" />
-  <meta name="keywords" content="zsl99a, 个人主页, 前端工程师, 全栈工程师, React, Vue, TypeScript, NestJS, Express, Node.js, Rust, Axum, Tokio, 高频交易, 量化交易, WebSocket, PostgreSQL, Sentry 前端监控, Google Analytics, 埋点, 性能优化, 老旧系统重构, AI 编程" />
+  <title>zsl99a · 资深前端 / 全栈工程师 · React · Vue · NestJS · Rust</title>
+  <meta name="description" content="zsl99a的个人主页：12 年技术沉淀，精通 React/Vue/TypeScript 前端架构与 NestJS/Express 全栈开发，具备深入 Rust 底层系统的高并发并发实战与工程化治理能力。" />
+  <meta name="keywords" content="zsl99a, 个人主页, 前端工程师, 全栈工程师, React, Vue, TypeScript, NestJS, Express, Node.js, Rust, Axum, Tokio, WebSocket, PostgreSQL, Sentry, 性能优化, 老旧系统重构, 前端工程化, 组件库, AI 编程" />
   <meta name="author" content="zsl99a" />
-  <meta property="og:title" content="zsl99a · 前端 / 全栈工程师" />
-  <meta property="og:description" content="12 年全栈经验 · Rust 高频交易系统 · AI 辅助编程" />
+  <meta property="og:title" content="zsl99a · 资深前端 / 全栈工程师" />
+  <meta property="og:description" content="12 年全栈沉淀 · React / Vue 前端架构 · NestJS / Express · Rust 系统纵深" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://zsl99a.github.io/" />
   <meta name="twitter:card" content="summary" />
@@ -70,19 +70,19 @@
         <div class="hero-copy">
           <div class="hero-badge">
             <span class="dot"></span>
-            <span class="badge-txt">前端 / 全栈架构 · 独立开发者</span>
+            <span class="badge-txt">前端架构 · 全栈工程 · 独立开发</span>
           </div>
           <h1 class="hero-h1">
             <span class="hero-name grad">zsl99a</span>
-            <span class="hero-title">前端 / 全栈工程师</span>
+            <span class="hero-title">资深前端 / 全栈工程师</span>
           </h1>
-          <p class="hero-sub">近几年在写 <span class="accent">Rust 高频交易系统</span> —— 行情聚合、本地订单簿、多策略引擎与风控全链路，7×24 在线运行</p>
+          <p class="hero-sub">深耕 <span class="accent">React / Vue / TypeScript</span> 现代前端架构与 <span class="accent">NestJS / Express</span> 全栈交付，兼具 <span class="accent">Rust</span> 底层系统与高性能异步并发实战沉淀</p>
           <p class="hero-typed"><span id="typed"></span><span class="caret">▌</span></p>
           <div class="hero-tags">
-            <span class="tag"><span class="tag-dot d1"></span>Rust 高频交易</span>
-            <span class="tag"><span class="tag-dot d2"></span>React / Vue</span>
-            <span class="tag"><span class="tag-dot d3"></span>独立开发者</span>
-            <span class="tag"><span class="tag-dot d4"></span>AI 辅助编程</span>
+            <span class="tag"><span class="tag-dot d1"></span>React / Vue 架构</span>
+            <span class="tag"><span class="tag-dot d2"></span>NestJS / Express</span>
+            <span class="tag"><span class="tag-dot d3"></span>Rust 底层纵深</span>
+            <span class="tag"><span class="tag-dot d4"></span>工程治理 / AI 提效</span>
           </div>
           <div class="hero-cta">
             <a href="#projects" class="btn btn-primary">查看项目 <span class="btn-arrow">→</span></a>
@@ -103,23 +103,23 @@
           </div>
         </div>
 
-        <!-- 终端窗口（核心引擎实时演示） -->
+        <!-- 终端窗口（全栈系统运行时健康演示） -->
         <div class="hero-stage" aria-hidden="true">
           <div class="terminal">
             <div class="term-bar">
               <span class="term-dots"><i></i><i></i><i></i></span>
-              <span class="term-title">core-engine · cargo run</span>
+              <span class="term-title">system-runtime · dev</span>
               <span class="term-status">● running</span>
             </div>
             <div class="term-body">
-              <div class="t-line t-dim">$ cargo run --release</div>
-              <div class="t-line t-dim">▸ Compiling core-engine v0.4.2 ...</div>
-              <div class="t-line"><span class="t-ok">●</span> ws::gateway&nbsp;&nbsp;&nbsp;&nbsp;stream&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected&nbsp;&nbsp;<span class="t-v">0.31ms</span></div>
-              <div class="t-line"><span class="t-ok">●</span> orderbook&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;depth=200&nbsp;&nbsp;snapshots&nbsp;&nbsp;<span class="t-v">12,408/s</span></div>
-              <div class="t-line"><span class="t-ok">●</span> strategy::core&nbsp;active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workers&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-up">8 threads</span></div>
-              <div class="t-line"><span class="t-ok">●</span> risk::guard&nbsp;&nbsp;&nbsp;ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memory&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-v">24.6MB</span></div>
-              <div class="t-line"><span class="t-amber">○</span> event::dispatch&nbsp;sync&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency&nbsp;&nbsp;&nbsp;<span class="t-amber">微秒级</span></div>
-              <div class="t-line"><span class="t-ok">●</span> service::loop&nbsp;&nbsp;running&nbsp;&nbsp;&nbsp;&nbsp;uptime&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-ok">7×24h</span></div>
+              <div class="t-line t-dim">$ pnpm dev &amp;&amp; cargo check</div>
+              <div class="t-line t-dim">▸ Initializing Full-Stack Runtime ...</div>
+              <div class="t-line"><span class="t-ok">●</span> web::client&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;React&nbsp;19&nbsp;/&nbsp;TS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ready&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-v">0.18s</span></div>
+              <div class="t-line"><span class="t-ok">●</span> server::api&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NestJS&nbsp;/&nbsp;Express&nbsp;&nbsp;&nbsp;listening&nbsp;&nbsp;<span class="t-v">:4000</span></div>
+              <div class="t-line"><span class="t-ok">●</span> core::native&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rust&nbsp;(Axum+Tokio)&nbsp;&nbsp;worker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-up">active</span></div>
+              <div class="t-line"><span class="t-ok">●</span> stream::ws&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WebSocket&nbsp;Hub&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected&nbsp;&nbsp;<span class="t-v">100%</span></div>
+              <div class="t-line"><span class="t-ok">●</span> bundler::vite&nbsp;&nbsp;&nbsp;&nbsp;Tree-Shaking&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;optimized&nbsp;&nbsp;<span class="t-v">14.2kb</span></div>
+              <div class="t-line"><span class="t-amber">○</span> perf::vitals&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LCP&nbsp;0.6s&nbsp;·&nbsp;CLS&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;score&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-amber">99/100</span></div>
               <div class="t-line t-cmd"><span class="t-prompt">❯</span><span class="t-caret"></span></div>
             </div>
           </div>
@@ -136,42 +136,36 @@
     <!-- ================= MARQUEE ================= -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee-group">
-        <span class="m-item">Rust</span><i class="m-sep">✦</i>
-        <span class="m-item">Axum</span><i class="m-sep">✦</i>
-        <span class="m-item">Tokio</span><i class="m-sep">✦</i>
         <span class="m-item">React</span><i class="m-sep">✦</i>
         <span class="m-item">Vue</span><i class="m-sep">✦</i>
         <span class="m-item">TypeScript</span><i class="m-sep">✦</i>
         <span class="m-item">NestJS</span><i class="m-sep">✦</i>
         <span class="m-item">Express</span><i class="m-sep">✦</i>
-        <span class="m-item">WebSocket</span><i class="m-sep">✦</i>
-        <span class="m-item">高频交易</span><i class="m-sep">✦</i>
-        <span class="m-item">PostgreSQL</span><i class="m-sep">✦</i>
-        <span class="m-item">低延迟架构</span><i class="m-sep">✦</i>
-        <span class="m-item">AI 辅助编程</span><i class="m-sep">✦</i>
-        <span class="m-item">系统重构</span><i class="m-sep">✦</i>
         <span class="m-item">Node.js</span><i class="m-sep">✦</i>
-        <span class="m-item">Docker</span><i class="m-sep">✦</i>
-        <span class="m-item">RxJS</span><i class="m-sep">✦</i>
+        <span class="m-item">Rust</span><i class="m-sep">✦</i>
+        <span class="m-item">Axum</span><i class="m-sep">✦</i>
+        <span class="m-item">Tokio</span><i class="m-sep">✦</i>
+        <span class="m-item">WebSocket</span><i class="m-sep">✦</i>
+        <span class="m-item">PostgreSQL</span><i class="m-sep">✦</i>
+        <span class="m-item">前端工程化</span><i class="m-sep">✦</i>
+        <span class="m-item">性能攻坚</span><i class="m-sep">✦</i>
+        <span class="m-item">系统重构</span><i class="m-sep">✦</i>
       </div>
       <div class="marquee-group" aria-hidden="true">
-        <span class="m-item">Rust</span><i class="m-sep">✦</i>
-        <span class="m-item">Axum</span><i class="m-sep">✦</i>
-        <span class="m-item">Tokio</span><i class="m-sep">✦</i>
         <span class="m-item">React</span><i class="m-sep">✦</i>
         <span class="m-item">Vue</span><i class="m-sep">✦</i>
         <span class="m-item">TypeScript</span><i class="m-sep">✦</i>
         <span class="m-item">NestJS</span><i class="m-sep">✦</i>
         <span class="m-item">Express</span><i class="m-sep">✦</i>
-        <span class="m-item">WebSocket</span><i class="m-sep">✦</i>
-        <span class="m-item">高频交易</span><i class="m-sep">✦</i>
-        <span class="m-item">PostgreSQL</span><i class="m-sep">✦</i>
-        <span class="m-item">低延迟架构</span><i class="m-sep">✦</i>
-        <span class="m-item">AI 辅助编程</span><i class="m-sep">✦</i>
-        <span class="m-item">系统重构</span><i class="m-sep">✦</i>
         <span class="m-item">Node.js</span><i class="m-sep">✦</i>
-        <span class="m-item">Docker</span><i class="m-sep">✦</i>
-        <span class="m-item">RxJS</span><i class="m-sep">✦</i>
+        <span class="m-item">Rust</span><i class="m-sep">✦</i>
+        <span class="m-item">Axum</span><i class="m-sep">✦</i>
+        <span class="m-item">Tokio</span><i class="m-sep">✦</i>
+        <span class="m-item">WebSocket</span><i class="m-sep">✦</i>
+        <span class="m-item">PostgreSQL</span><i class="m-sep">✦</i>
+        <span class="m-item">前端工程化</span><i class="m-sep">✦</i>
+        <span class="m-item">性能攻坚</span><i class="m-sep">✦</i>
+        <span class="m-item">系统重构</span><i class="m-sep">✦</i>
       </div>
     </div>
 
@@ -188,9 +182,9 @@
           <!-- 个人主旨陈述卡 -->
           <div class="about-hero glass reveal">
             <div class="about-hero-tag"><span class="tag-dot d1"></span> ENGINEERING PHILOSOPHY · 工程师特质</div>
-            <h3 class="about-hero-title">12 年全栈沉淀，坚信代码的终极价值是<span class="grad">「把复杂系统做对、做快、做稳」</span></h3>
+            <h3 class="about-hero-title">12 年全栈沉淀，坚信前端的核心价值是<span class="grad">「把复杂交互做优雅、把工程做健壮、把性能做到极致」</span></h3>
             <p class="about-hero-desc">
-              前 7 年深耕前端工程与多端架构（<strong>React</strong> 起家，Vue、小程序、Node.js 均有丰富实战）；后 5 年以独立开发者身份转向 <strong>Rust</strong>，从 0 独立构建微秒级高频交易系统，至今 7×24 在线稳定运行。接手老旧系统多，能啃硬骨头；也能独立负责业务从 0 到上线交付的全生命周期。
+              深耕前端工程领域，从 <strong>React / Vue</strong> 组件化体系、多端开发到 <strong>Node.js（NestJS / Express）</strong> 全栈交付均有扎实沉淀；近 5 年深入 <strong>Rust</strong> 异步并发与高性能系统，具备系统级性能思维与严谨的架构视野。接手老旧系统多，擅长啃硬骨头；也能独立负责业务从 0 到 1 的架构设计与上线交付。
             </p>
           </div>
 
@@ -199,48 +193,51 @@
             <div class="pillar-card glass tilt reveal">
               <div class="pillar-top">
                 <span class="pillar-icon">⚛️</span>
-                <span class="pillar-badge">技术纵深</span>
+                <span class="pillar-badge">前端根基 · 架构工程化</span>
               </div>
-              <h4 class="pillar-title">前端根基 · 贯通底层</h4>
+              <h4 class="pillar-title">组件设计 · 严谨类型 · 性能治理</h4>
               <p class="pillar-desc">
-                以 React 组件化与工程化体系为根基，拓展至多端交付与 Node.js 实时后端；深入 Rust 掌握多线程、异步 I/O 与内存安全，具备从像素界面到系统底层的全链路掌控力。
+                以 React / Vue 组件化体系与 TypeScript 为核心，搭建模块化通用组件库与规范化构建流水线；注重组件解耦与单向数据流，兼顾复杂交互体验、首屏毫秒级加载与长期可维护性。
               </p>
               <div class="pillar-tags">
                 <span>React / Vue 架构</span>
-                <span>Rust 高并发</span>
-                <span>全链路交付</span>
+                <span>TypeScript 类型流</span>
+                <span>组件库封装</span>
+                <span>性能优化</span>
+              </div>
+            </div>
+
+            <div class="pillar-card glass tilt reveal">
+              <div class="pillar-top">
+                <span class="pillar-icon">🚀</span>
+                <span class="pillar-badge">全栈贯通 · 技术纵深</span>
+              </div>
+              <h4 class="pillar-title">Node.js 全栈 · 深入 Rust 底层</h4>
+              <p class="pillar-desc">
+                熟练运用 NestJS / Express 构建高可用 BFF 与后端服务，配合 WebSocket 实时数据通信与 PostgreSQL；深入 Rust 掌握多线程、异步 I/O 与内存安全，具备从像素界面到系统底层的全链路掌控力。
+              </p>
+              <div class="pillar-tags">
+                <span>NestJS / Express</span>
+                <span>BFF 架构</span>
+                <span>Rust (Tokio/Axum)</span>
+                <span>WebSocket 实时通信</span>
               </div>
             </div>
 
             <div class="pillar-card glass tilt reveal">
               <div class="pillar-top">
                 <span class="pillar-icon">🛠️</span>
-                <span class="pillar-badge">攻坚治理</span>
+                <span class="pillar-badge">攻坚治理 · 质量与闭环</span>
               </div>
               <h4 class="pillar-title">能从 0 到 1 · 擅攻遗留重构</h4>
               <p class="pillar-desc">
-                接手并治理过多套核心业务老旧系统：渐进式技术栈升级、首屏与构建提速、代码质量卡口建设；既能单枪匹马把新业务做到上线，也能化解历史包袱使系统重焕新生。
+                治理过多套核心业务老旧系统：推进技术栈平滑迁移、构建与打包瘦身、异常主动感知（Sentry）与数据埋点；深度将 AI 融入日常编码提效，同时以工业级标准守牢代码底线。
               </p>
               <div class="pillar-tags">
                 <span>老系统现代化</span>
-                <span>性能瓶颈攻坚</span>
-                <span>工程化治理</span>
-              </div>
-            </div>
-
-            <div class="pillar-card glass tilt reveal">
-              <div class="pillar-top">
-                <span class="pillar-icon">📊</span>
-                <span class="pillar-badge">业务闭环</span>
-              </div>
-              <h4 class="pillar-title">观测驱动 · 价值与质量守门</h4>
-              <p class="pillar-desc">
-                相比纯写代码更在意解决业务问题：搭建 Sentry 全链路报错采集实现异常主动感知，配置埋点拿数据说话；深度将 AI 融入日常编码提效，同时以高标准坚守代码质量底线。
-              </p>
-              <div class="pillar-tags">
-                <span>Sentry 报错治理</span>
-                <span>数据埋点驱动</span>
-                <span>AI 提效质量把关</span>
+                <span>Sentry 监控治理</span>
+                <span>代码质量卡口</span>
+                <span>AI 编程提效</span>
               </div>
             </div>
           </div>
@@ -249,7 +246,7 @@
           <div class="about-foot reveal">
             <div class="about-foot-focus">
               <span class="aff-label">当前聚焦方向</span>
-              <span class="aff-text">复杂前端架构 · 老旧系统重构 · 性能攻坚 · Rust 全栈系统</span>
+              <span class="aff-text">复杂前端架构 · 遗留系统现代化重构 · NestJS / Express 全栈 · Rust 高性能工程</span>
             </div>
             <div class="about-foot-actions">
               <a href="#projects" class="btn btn-primary btn-sm">查看精选项目 <span class="btn-arrow">→</span></a>
@@ -271,42 +268,42 @@
         <div class="skills-grid">
           <div class="skill-card glass tilt reveal">
             <div class="skill-head"><span class="skill-ico">⚛️</span><h3>前端架构与工程化</h3></div>
-            <p class="skill-desc">组件库与工程搭建，首屏与 SEO 优化，多端适配，老系统重构</p>
+            <p class="skill-desc">组件库与工程脚手架搭建，首屏渲染与包体积极致优化，多端适配与复杂 SPA/SSR 治理</p>
             <div class="skill-tags">
-              <span>React</span><span>Vue</span><span>TypeScript</span><span>小程序</span><span>Vite</span><span>ant&nbsp;design</span><span>Less/Sass</span>
+              <span>React</span><span>Vue</span><span>TypeScript</span><span>Next.js</span><span>Vite</span><span>Webpack</span><span>Ant&nbsp;Design</span><span>Tailwind/Less</span>
             </div>
-            <div class="bar"><span class="bar-label">React（5 年+）<em>95%</em></span><span class="bar-track"><i data-w="95"></i></span></div>
-            <div class="bar"><span class="bar-label">工程化与性能<em>90%</em></span><span class="bar-track"><i data-w="90"></i></span></div>
+            <div class="bar"><span class="bar-label">React / 前端架构（5 年+）<em>95%</em></span><span class="bar-track"><i data-w="95"></i></span></div>
+            <div class="bar"><span class="bar-label">工程化与性能优化<em>92%</em></span><span class="bar-track"><i data-w="92"></i></span></div>
           </div>
 
           <div class="skill-card glass tilt reveal">
-            <div class="skill-head"><span class="skill-ico">🦀</span><h3>后端与高并发 <span class="sub">Rust · Node.js</span></h3></div>
-            <p class="skill-desc">实时数据流、WebSocket 多源聚合、NestJS/Express 服务端架构、PostgreSQL</p>
+            <div class="skill-head"><span class="skill-ico">🚀</span><h3>Node.js &amp; 全栈后端 <span class="sub">NestJS · Express</span></h3></div>
+            <p class="skill-desc">NestJS 模块化企业级开发、Express 敏捷服务、RESTful / GraphQL 接口设计、BFF 架构与数据持久化</p>
             <div class="skill-tags">
-              <span>Rust</span><span>Axum</span><span>Tokio</span><span>Node.js</span><span>NestJS</span><span>Express</span><span>PostgreSQL</span><span>RxJS</span>
+              <span>Node.js</span><span>NestJS</span><span>Express</span><span>TypeScript</span><span>PostgreSQL</span><span>Redis</span><span>Prisma/TypeORM</span><span>RxJS</span>
             </div>
-            <div class="bar"><span class="bar-label">Rust 系统编程<em>88%</em></span><span class="bar-track"><i data-w="88"></i></span></div>
-            <div class="bar"><span class="bar-label">Node.js / 高并发服务端<em>92%</em></span><span class="bar-track"><i data-w="92"></i></span></div>
+            <div class="bar"><span class="bar-label">NestJS / Express 全栈<em>93%</em></span><span class="bar-track"><i data-w="93"></i></span></div>
+            <div class="bar"><span class="bar-label">BFF 与接口治理<em>90%</em></span><span class="bar-track"><i data-w="90"></i></span></div>
           </div>
 
           <div class="skill-card glass tilt reveal">
-            <div class="skill-head"><span class="skill-ico">⚡</span><h3>底层 · 高频交易</h3></div>
-            <p class="skill-desc">行情聚合、本地订单簿 (LOB)、策略引擎、风控监控，微秒级延迟</p>
+            <div class="skill-head"><span class="skill-ico">🦀</span><h3>底层系统与高性能实践 <span class="sub">Rust · Tokio</span></h3></div>
+            <p class="skill-desc">深入 Rust 异步 I/O (Tokio / Axum)、WebSocket 实时通信网关、多线程并发与高可靠自营系统</p>
             <div class="skill-tags">
-              <span>行情网关</span><span>LOB</span><span>策略引擎</span><span>Grafana</span><span>多线程</span>
+              <span>Rust</span><span>Axum</span><span>Tokio</span><span>WebSocket</span><span>高并发</span><span>网络协议</span><span>自研引擎</span><span>Grafana</span>
             </div>
-            <div class="bar"><span class="bar-label">低延迟架构<em>90%</em></span><span class="bar-track"><i data-w="90"></i></span></div>
-            <div class="bar"><span class="bar-label">系统稳定性<em>93%</em></span><span class="bar-track"><i data-w="93"></i></span></div>
+            <div class="bar"><span class="bar-label">Rust 异步系统<em>88%</em></span><span class="bar-track"><i data-w="88"></i></span></div>
+            <div class="bar"><span class="bar-label">实时通信与性能<em>91%</em></span><span class="bar-track"><i data-w="91"></i></span></div>
           </div>
 
           <div class="skill-card glass tilt reveal">
-            <div class="skill-head"><span class="skill-ico">🛠️</span><h3>工具链与协作</h3></div>
-            <p class="skill-desc">Git 流程与 ESLint 质量卡口，Docker 与 CI/CD，AI 辅助开发</p>
+            <div class="skill-head"><span class="skill-ico">🛠️</span><h3>工程规范与质量基建</h3></div>
+            <p class="skill-desc">严格的 Git 流程与 ESLint / TS 质量卡口，Sentry 异常监控，CI/CD 自动化，AI 辅助深度提效</p>
             <div class="skill-tags">
-              <span>Git</span><span>ESLint</span><span>Docker</span><span>Linux</span><span>AI 编程</span><span>CI/CD</span>
+              <span>Git</span><span>ESLint</span><span>Sentry</span><span>Docker</span><span>Linux</span><span>CI/CD</span><span>AI 编程</span><span>性能监控</span>
             </div>
-            <div class="bar"><span class="bar-label">研发流程提效<em>91%</em></span><span class="bar-track"><i data-w="91"></i></span></div>
-            <div class="bar"><span class="bar-label">代码质量卡口<em>89%</em></span><span class="bar-track"><i data-w="89"></i></span></div>
+            <div class="bar"><span class="bar-label">质量卡口与流程<em>92%</em></span><span class="bar-track"><i data-w="92"></i></span></div>
+            <div class="bar"><span class="bar-label">AI 提效与工程化<em>94%</em></span><span class="bar-track"><i data-w="94"></i></span></div>
           </div>
         </div>
       </div>
@@ -328,11 +325,11 @@
                 <span class="tl-role">独立开发者</span>
                 <span class="tl-date"><i class="tl-pin"></i>2020.02 – 至今</span>
               </div>
-              <p class="tl-sum">独立承接互联网产品与 Rust 底层系统，从设计、开发到运维一条龙。</p>
+              <p class="tl-sum">独立承接互联网产品与自研系统，从架构设计、核心开发到上线运维全生命周期交付。</p>
               <ul class="tl-list">
-                <li>三端一体小游戏聚合平台：自研通用组件库 + 代码分割/懒加载，交付 <strong>100+</strong> 标准化页面，页面秒级加载。</li>
-                <li>加密货币套利系统（Node.js + RxJS）：发现杠杆代币交易对的<strong>规则性设计缺陷</strong>，实盘 7 个月、累计<strong>数十万美元收益</strong>，成为深入 Rust 高频交易的直接驱动力。</li>
-                <li>用 <strong>Rust</strong> 从零构建微秒级高频交易系统：行情聚合、本地订单簿、策略引擎（<strong>多策略并行 + 实盘切换</strong>）、风控与监控全链路，7×24h 高负载稳定运行。</li>
+                <li>三端一体小游戏聚合平台：自研高复用组件库 + 代码按需拆分与懒加载，实现多端一致性体验与首屏秒级加载。</li>
+                <li>高并发数据聚合与套利系统（Node.js + RxJS）：挖掘交易规则设计，完成高吞吐事件流处理与实盘闭环。</li>
+                <li>高性能自营交易底座（Rust 自研）：从 0 构建本地订单簿管理、多策略并行引擎与全链路风控，保持严苛的系统稳定性与内存安全。</li>
               </ul>
             </div>
           </div>
@@ -348,7 +345,7 @@
               <ul class="tl-list">
                 <li>盒马 / 阿里云中后台：CRM、营销、会员、审批流等核心业务；践行 DevOps 流水线与灰度发布等研发流程，保障版本迭代平稳可控。</li>
                 <li>AliOS 教育助手家长端：Cordova + Vue 混合开发，统一多端适配规范。</li>
-                <li><strong>阿里云内部指标监控平台</strong>：面向阿里云<strong>百万台服务器</strong>的指标汇总大盘，承载全站运维数据的集中展示与统一观测入口；主导架构升级：CDN 迁移 + 按需拆分，首屏 10s+ → <strong>3s 以内</strong>，并完成系统整体样式的统一。</li>
+                <li><strong>阿里云内部指标监控平台</strong>：面向阿里云海量服务器集群的统一指标汇总大盘与观测门户；主导前端架构升级与资源加载优化（CDN 迁移 + 路由与组件按需拆分），首屏渲染由 10s+ 降至 <strong>3s 以内</strong>，规范化全站交互与视觉标准。</li>
               </ul>
             </div>
           </div>
@@ -362,10 +359,10 @@
               </div>
               <p class="tl-sum">带前端团队，负责技术栈升级与日常研发管理。</p>
               <ul class="tl-list">
-                <li>主导全站从 <strong>jQuery → React</strong> 迁移，迭代效率提升 50%+，技术债务大幅下降。</li>
-                <li>开拓微信小程序入口（内测期立项），提前完成全站 HTTPS 合规升级，规避政策风险。</li>
+                <li>主导全站从 <strong>jQuery → React</strong> 现代化迁移，大幅降低技术债务并提升研发效能 50%+。</li>
+                <li>开拓微信小程序生态（内测期立项），提前完成全站 HTTPS 合规升级，规避政策风险。</li>
                 <li>招聘平台 SEO 重构：首屏同步渲染 + 拦截跳转改异步渲染，实现 <strong>SEO 友好与操作无刷新</strong>双重目标，自然搜索流量显著提升。</li>
-                <li>ant design pro 开源<strong>之前</strong>，自研同类高效 CRUD 组件库，大幅提升后台研发效率与一致性。</li>
+                <li>Ant Design Pro 开源<strong>之前</strong>，自研同类通用 CRUD 组件库，大幅提升团队研发效率与一致性。</li>
               </ul>
             </div>
           </div>
@@ -421,7 +418,7 @@
           <div class="contact-glare" aria-hidden="true"></div>
           <p class="contact-kicker">OPEN TO WORK · 合作 / 全职 / 顾问</p>
           <h3>一起把复杂系统<br /><span class="grad">做对、做快、做稳</span></h3>
-          <p class="contact-sub">可承接方向：老旧系统重构 · 高并发性能优化 · 底层架构升级 · Rust 全栈交付</p>
+          <p class="contact-sub">可承接方向：前端架构设计 · 遗留系统现代化重构 · NestJS / Express 全栈 · 性能瓶颈攻坚</p>
           <div class="contact-cta">
             <a href="mailto:zsl99a@live.com" class="btn btn-primary btn-lg">
               <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.784.784 2 1.75 2Zm1.586 2 .964.89L8 8.07l3.7-3.18.964-.89H3.336ZM15 5.943 8.254 11.56a.977.977 0 0 1-.508 0L1 5.943v6.307c0 .138.112.25.25.25h13.5a.25.25 0 0 0 .25-.25V5.943ZM1.75 3.5a.25.25 0 0 0-.25.25v.1L8 9.43l6.5-5.58v-.1a.25.25 0 0 0-.25-.25H1.75Z"/></svg>
