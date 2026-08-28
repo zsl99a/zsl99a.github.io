@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>朱少林 · 前端 / 全栈工程师 · Rust 高频交易系统构建者</title>
+  <meta name="description" content="朱少林的个人主页：12 年全栈开发经验，React/Vue/TypeScript 前端架构，Rust(Axum/Tokio) 高并发与微秒级高频交易系统，AI 辅助编程践行者。" />
+  <meta name="author" content="朱少林 (zsl99a)" />
+  <meta property="og:title" content="朱少林 · 前端 / 全栈工程师" />
+  <meta property="og:description" content="12 年全栈经验 · Rust 高频交易系统 · AI 辅助编程" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- 背景粒子画布 -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- 顶部导航 -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">
+        <span class="logo-mark">&lt;/&gt;</span><span>zsl99a</span>
+      </a>
+      <nav class="nav-links" id="nav-links">
+        <a href="#about" class="nav-link">关于</a>
+        <a href="#skills" class="nav-link">技能</a>
+        <a href="#experience" class="nav-link">经历</a>
+        <a href="#projects" class="nav-link">项目</a>
+        <a href="#github" class="nav-link">GitHub</a>
+        <a href="#contact" class="nav-link">联系</a>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="菜单">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero-inner">
+        <div class="hero-status reveal">
+          <span class="dot"></span> 可承接新机会 · Open to opportunities
+        </div>
+        <h1 class="hero-name reveal">
+          <span class="grad">朱少林</span>
+        </h1>
+        <p class="hero-role reveal">
+          前端 / 全栈工程师 · <span class="accent">Rust 高频交易系统</span> 构建者
+        </p>
+        <p class="hero-typed reveal">
+          <span id="typed"></span><span class="caret">|</span>
+        </p>
+        <div class="hero-tags reveal">
+          <span class="tag">12 年实战</span>
+          <span class="tag">全栈能力</span>
+          <span class="tag">独立开发者</span>
+          <span class="tag">AI 编程践行者</span>
+        </div>
+        <div class="hero-cta reveal">
+          <a href="#projects" class="btn btn-primary">查看项目</a>
+          <a href="#contact" class="btn btn-ghost">联系我</a>
+        </div>
+        <div class="hero-social reveal">
+          <a href="https://github.com/zsl99a" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
+          <a href="mailto:zsl99a@live.com" aria-label="Email">Email</a>
+          <a href="#contact" aria-label="WeChat">WeChat</a>
+        </div>
+      </div>
+      <a href="#about" class="scroll-hint" aria-label="向下滚动">↓</a>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">01</span>关于我</h2>
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <p>
+              12 年全栈开发经验，技术栈以 <strong>React</strong> 为起点，逐步覆盖 Vue、小程序与
+              <strong>Node.js</strong> 等主流生态。近 5 年以独立开发者身份深入
+              <strong>Rust</strong> 底层与<strong>高频交易系统</strong>开发，具备从需求分析、架构设计到线上部署的全生命周期能力。
+            </p>
+            <p>
+              近两年将 <strong>AI 辅助编程</strong>深度融入工作流，在保障代码质量的前提下显著提升交付效率。
+              既懂业务又懂底层，善于用新工具解决实际问题的实战型开发者。
+            </p>
+          </div>
+          <div class="about-stats reveal">
+            <div class="stat">
+              <span class="stat-num" data-count="12">0</span><span class="stat-plus">+</span>
+              <span class="stat-label">年全栈经验</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="11">0</span><span class="stat-plus">+</span>
+              <span class="stat-label">公开仓库</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="352">0</span>
+              <span class="stat-label">近一年贡献</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="100">0</span><span class="stat-plus">+</span>
+              <span class="stat-label">交付页面</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">02</span>核心技能栈</h2>
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <div class="skill-head"><span class="skill-ico">⚛️</span><h3>前端架构与工程化</h3></div>
+            <p class="skill-desc">组件库封装 · 工程搭建 · 规范化落地 · 首屏/SEO 极致优化 · 多端跨端适配 · 老旧系统重构</p>
+            <div class="skill-tags">
+              <span>React</span><span>Vue</span><span>TypeScript</span><span>小程序</span><span>Webpack/Rollup</span><span>ant design</span><span>Less/Sass</span>
+            </div>
+            <div class="bar"><span class="bar-label">React (5年+)</span><span class="bar-track"><i data-w="95"></i></span></div>
+            <div class="bar"><span class="bar-label">工程化/性能优化</span><span class="bar-track"><i data-w="90"></i></span></div>
+          </div>
+
+          <div class="skill-card reveal">
+            <div class="skill-head"><span class="skill-ico">🦀</span><h3>后端与高并发 (Rust)</h3></div>
+            <p class="skill-desc">实时数据流 · WebSocket 多源聚合 · 高并发服务 · 分布式状态同步 · PostgreSQL</p>
+            <div class="skill-tags">
+              <span>Rust</span><span>Axum</span><span>Tokio</span><span>Node.js</span><span>PostgreSQL</span><span>RxJS</span>
+            </div>
+            <div class="bar"><span class="bar-label">Rust 系统编程</span><span class="bar-track"><i data-w="88"></i></span></div>
+            <div class="bar"><span class="bar-label">高并发/实时</span><span class="bar-track"><i data-w="92"></i></span></div>
+          </div>
+
+          <div class="skill-card reveal">
+            <div class="skill-head"><span class="skill-ico">⚡</span><h3>底层 · 高频交易</h3></div>
+            <p class="skill-desc">行情聚合 · 本地订单簿(LOB)维护 · 策略引擎 · 风控监控 · 微秒级延迟 · 7×24 稳定运行</p>
+            <div class="skill-tags">
+              <span>行情网关</span><span>LOB</span><span>策略引擎</span><span>Grafana</span><span>多线程</span>
+            </div>
+            <div class="bar"><span class="bar-label">低延迟架构</span><span class="bar-track"><i data-w="90"></i></span></div>
+            <div class="bar"><span class="bar-label">系统稳定性</span><span class="bar-track"><i data-w="93"></i></span></div>
+          </div>
+
+          <div class="skill-card reveal">
+            <div class="skill-head"><span class="skill-ico">🛠️</span><h3>工具链与协作</h3></div>
+            <p class="skill-desc">Git Hooks/ESLint 质量卡口 · Docker/DevOps 流水线 · 代码分割/懒加载 · AI 辅助研发</p>
+            <div class="skill-tags">
+              <span>Git</span><span>ESLint</span><span>Docker</span><span>Neovim</span><span>AI 编程</span><span>CI/CD</span>
+            </div>
+            <div class="bar"><span class="bar-label">研发提效</span><span class="bar-track"><i data-w="91"></i></span></div>
+            <div class="bar"><span class="bar-label">质量保障</span><span class="bar-track"><i data-w="89"></i></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">03</span>工作经历</h2>
+        <div class="timeline">
+          <div class="tl-item reveal">
+            <span class="tl-dot"></span>
+            <div class="tl-card">
+              <div class="tl-meta"><span class="tl-role">独立开发者 / 量化私募</span><span class="tl-date">2020.02 – 至今</span></div>
+              <p class="tl-sum">全权负责互联网产品与高性能底层系统的架构设计、全栈开发与长期运维。</p>
+              <ul class="tl-list">
+                <li>用 <strong>Rust</strong> 从零构建微秒级高频交易系统：行情聚合、本地订单簿、策略引擎、风控与监控全链路。</li>
+                <li>三端一体小游戏聚合平台：自研组件库 + 代码分割/懒加载，交付 100+ 标准化页面。</li>
+                <li>加密货币套利系统（Node.js + RxJS）：实盘 7 个月，毫秒级价差监控与自动下单。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-item reveal">
+            <span class="tl-dot"></span>
+            <div class="tl-card">
+              <div class="tl-meta"><span class="tl-role">深圳法本 · 阿里驻场前端工程师</span><span class="tl-date">2018.03 – 2020.01</span></div>
+              <p class="tl-sum">驻场参与阿里云、盒马核心中后台研发与架构迭代。</p>
+              <ul class="tl-list">
+                <li>阿里云运维平台架构升级：首屏加载 10s+ → 3s 以内（CDN 迁移 + 按需拆分）。</li>
+                <li>盒马 / 阿里云中后台：CRM、营销、会员、审批流；落地灰度发布与一键回滚。</li>
+                <li>AliOS 教育助手家长端：Cordova + Vue 混合开发，统一多端适配规范。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-item reveal">
+            <span class="tl-dot"></span>
+            <div class="tl-card">
+              <div class="tl-meta"><span class="tl-role">杭州东方网升科技 · 前端负责人</span><span class="tl-date">2014.05 – 2018.02</span></div>
+              <p class="tl-sum">统筹团队技术体系搭建、技术栈升级与研发管理。</p>
+              <ul class="tl-list">
+                <li>主导全站从 <strong>jQuery → React</strong> 迁移，迭代效率提升 50%+，技术债务大幅下降。</li>
+                <li>开拓微信小程序入口，提前完成全站 HTTPS 合规升级，规避政策风险。</li>
+                <li>招聘平台 SEO 重构 + 多端流量入口，自然搜索流量与留存显著提升。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">04</span>精选项目</h2>
+        <p class="reveal projects-note">以下为 GitHub 公开仓库，反映我在 Rust 系统编程、实时网络通信与全栈方向的持续探索。</p>
+        <div class="projects-grid" id="projects-grid">
+          <a class="proj reveal" href="https://github.com/zsl99a/websocket" target="_blank" rel="noopener">
+            <div class="proj-top"><h3>websocket</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
+            <p>高性能异步 WebSocket 客户端库：自动重连(指数退避)、心跳、消息路由、事件驱动，基于 Tokio。</p>
+            <div class="proj-foot"><span class="star">★ 0</span><span class="go">查看仓库 →</span></div>
+          </a>
+
+          <a class="proj reveal" href="https://github.com/zsl99a/netz" target="_blank" rel="noopener">
+            <div class="proj-top"><h3>netz</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
+            <p>高性能网络层（netz-core / netz-quic），面向低延迟通信与闪电网络方向的基础组件。</p>
+            <div class="proj-foot"><span class="star">★ 0</span><span class="go">查看仓库 →</span></div>
+          </a>
+
+          <a class="proj reveal" href="https://github.com/zsl99a/quark-im" target="_blank" rel="noopener">
+            <div class="proj-top"><h3>quark-im</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
+            <p>基于 Rust 的即时通讯系统：消息处理模块、链路测速与路径查找，附时序图设计文档。</p>
+            <div class="proj-foot"><span class="star">★ 1</span><span class="go">查看仓库 →</span></div>
+          </a>
+
+          <a class="proj reveal" href="https://github.com/zsl99a/ztopic" target="_blank" rel="noopener">
+            <div class="proj-top"><h3>ztopic</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
+            <p>"Helium" 主题消息组件：Rust 消息中间件方向的探索，仓库 Star 数最高的原创项目。</p>
+            <div class="proj-foot"><span class="star">★ 2</span><span class="go">查看仓库 →</span></div>
+          </a>
+
+          <a class="proj reveal" href="https://github.com/zsl99a/nitrogen" target="_blank" rel="noopener">
+            <div class="proj-top"><h3>nitrogen</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
+            <p>Rust 网络/QUIC 工具库：workspace 结构（macro / quic / utils / extra），含 CI 工作流。</p>
+            <div class="proj-foot"><span class="star">★ 1</span><span class="go">查看仓库 →</span></div>
+          </a>
+
+          <a class="proj reveal" href="https://github.com/zsl99a/oxygen-ui" target="_blank" rel="noopener">
+            <div class="proj-top"><h3>oxygen-ui</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
+            <p>Leptos + Axum Rust 全栈 Web 模板：Rust 编译至 WASM 的前端工程化实践。</p>
+            <div class="proj-foot"><span class="star">★ 0</span><span class="go">查看仓库 →</span></div>
+          </a>
+
+          <a class="proj reveal" href="https://github.com/zsl99a/nvim" target="_blank" rel="noopener">
+            <div class="proj-top"><h3>nvim</h3><span class="lang"><i class="dot lua"></i>Lua</span></div>
+            <p>个人 Neovim 配置：沉淀高频开发工作流与键位体系，提升日常编码效率。</p>
+            <div class="proj-foot"><span class="star">★ 0</span><span class="go">查看仓库 →</span></div>
+          </a>
+
+          <a class="proj reveal" href="https://github.com/zsl99a" target="_blank" rel="noopener">
+            <div class="proj-top"><h3>更多仓库 →</h3><span class="lang"><i class="dot rust"></i>Rust</span></div>
+            <p>casbin_rbatis_adapter、tokio(fork) 等。访问 GitHub 主页查看全部 11+ 公开仓库。</p>
+            <div class="proj-foot"><span class="star">profile</span><span class="go">前往 →</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- GITHUB -->
+    <section class="section" id="github">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">05</span>GitHub 技术影响力</h2>
+        <p class="reveal projects-note">数据实时取自 GitHub，公开透明。</p>
+        <div class="github-grid reveal">
+          <img class="gh-card" src="https://github-readme-stats.vercel.app/api?username=zsl99a&show_icons=true&theme=algolia&hide_border=true&bg_color=0a0e17&title_color=36e0c8&icon_color=f5a623&text_color=e6edf3&count_private=false" alt="GitHub Stats" />
+          <img class="gh-card" src="https://github-readme-stats.vercel.app/api/top-langs/?username=zsl99a&layout=compact&theme=algolia&hide_border=true&bg_color=0a0e17&title_color=36e0c8&text_color=e6edf3&langs_count=8" alt="Top Languages" />
+        </div>
+        <div class="github-strip reveal">
+          <a href="https://github.com/zsl99a?tab=repositories" target="_blank" rel="noopener">📦 11+ 公开仓库（多数 Rust）</a>
+          <a href="https://github.com/zsl99a" target="_blank" rel="noopener">🔥 近一年 352 次贡献</a>
+          <a href="https://github.com/zsl99a?tab=repositories" target="_blank" rel="noopener">🦀 主力语言：Rust</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="num">06</span>联系我</h2>
+        <div class="contact-card reveal">
+          <h3>一起把复杂系统做对、做快、做稳</h3>
+          <p>可承接方向：老旧系统重构 · 高并发性能优化 · 底层架构升级 · Rust 全栈交付</p>
+          <div class="contact-rows">
+            <a class="contact-row" href="mailto:zsl99a@live.com"><span class="c-k">邮箱</span><span class="c-v">zsl99a@live.com</span></a>
+            <a class="contact-row" href="#contact"><span class="c-k">微信</span><span class="c-v">zsl99a</span></a>
+            <a class="contact-row" href="https://github.com/zsl99a" target="_blank" rel="noopener"><span class="c-k">GitHub</span><span class="c-v">github.com/zsl99a</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© <span id="year">2026</span> 朱少林 · zsl99a</span>
+      <span class="footer-sub">Built with ❤️, Rust &amp; a lot of ☕</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
