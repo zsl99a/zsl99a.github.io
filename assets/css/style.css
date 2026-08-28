@@ -181,8 +181,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .tl-list strong{color:var(--text)}
 
 /* ============ PROJECTS ============ */
-.projects-note{color:var(--muted);margin-bottom:26px;font-size:14px}
-.projects-note b{color:var(--accent);font-family:var(--mono);font-weight:600}
 .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .proj{
   background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
