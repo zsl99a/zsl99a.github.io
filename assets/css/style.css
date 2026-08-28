@@ -334,11 +334,15 @@ a:focus-visible, button:focus-visible {
   font-weight: 800;
   line-height: 1.0;
   letter-spacing: -0.045em;
-  background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 52%, #bccbe8 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #3ef2cf 28%, #8b6cff 68%, #ffb84d 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 24px rgba(255, 255, 255, 0.12));
+  filter: drop-shadow(0 0 24px rgba(62, 242, 207, 0.42)) drop-shadow(0 0 50px rgba(139, 108, 255, 0.32));
+  transition: filter 0.3s var(--ease);
+}
+.hero-name:hover {
+  filter: drop-shadow(0 0 32px rgba(62, 242, 207, 0.6)) drop-shadow(0 0 65px rgba(139, 108, 255, 0.48));
 }
 .hero-role {
   display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
