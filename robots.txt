@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zsl99a.github.io/sitemap.xml

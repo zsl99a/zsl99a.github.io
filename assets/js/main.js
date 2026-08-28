@@ -11,13 +11,14 @@
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------- 导航：滚动阴影 + 高亮 ---------- */
+  /* ---------- 导航：滚动阴影 + 高亮（rAF 节流） ---------- */
   const nav = document.getElementById("nav");
   const navLinks = Array.from(document.querySelectorAll(".nav-link"));
   const sections = navLinks
     .map((a) => document.querySelector(a.getAttribute("href")))
     .filter(Boolean);
 
+  let scrollTicking = false;
   const onScroll = () => {
     if (nav) nav.classList.toggle("scrolled", window.scrollY > 30);
     const y = window.scrollY + 120;
@@ -26,18 +27,31 @@
     navLinks.forEach((a) =>
       a.classList.toggle("active", current && a.getAttribute("href") === "#" + current.id)
     );
+    scrollTicking = false;
   };
-  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("scroll", () => {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(onScroll);
+  }, { passive: true });
   onScroll();
 
   /* ---------- 移动端菜单 ---------- */
   const toggle = document.getElementById("nav-toggle");
   const links = document.getElementById("nav-links");
   if (toggle && links) {
-    toggle.addEventListener("click", () => links.classList.toggle("open"));
+    const setOpen = (open) => {
+      links.classList.toggle("open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+    };
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.addEventListener("click", () => setOpen(!links.classList.contains("open")));
     links.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => links.classList.remove("open"))
+      a.addEventListener("click", () => setOpen(false))
     );
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setOpen(false);
+    });
   }
 
   /* ---------- 打字机 ---------- */
@@ -67,22 +81,8 @@
     typedEl.textContent = phrases[0];
   }
 
-  /* ---------- 滚动揭示 + 数字递增 + 技能条 ---------- */
+  /* ---------- 滚动揭示 + 技能条 ---------- */
   const revealEls = document.querySelectorAll(".reveal");
-
-  const animateCount = (el) => {
-    const target = parseInt(el.dataset.count, 10) || 0;
-    if (reduceMotion) { el.textContent = target; return; }
-    const dur = 1400; const start = performance.now();
-    const step = (now) => {
-      const p = Math.min((now - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.floor(eased * target);
-      if (p < 1) requestAnimationFrame(step);
-      else el.textContent = target;
-    };
-    requestAnimationFrame(step);
-  };
 
   const fillBars = (card) => {
     card.querySelectorAll(".bar-track i").forEach((i) => {
@@ -90,24 +90,32 @@
     });
   };
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        el.classList.add("in");
-        el.querySelectorAll(".stat-num[data-count]").forEach(animateCount);
-        if (el.classList.contains("skill-card")) fillBars(el);
-        if (el.classList.contains("skills-grid")) el.querySelectorAll(".skill-card").forEach(fillBars);
-        io.unobserve(el);
-      });
-    },
-    { threshold: 0.18 }
-  );
-  revealEls.forEach((el) => io.observe(el));
-  // 技能网格整体兜底（避免卡片未单独触发）
-  const skillsGrid = document.querySelector(".skills-grid");
-  if (skillsGrid) io.observe(skillsGrid);
+  const revealAll = () => {
+    revealEls.forEach((el) => el.classList.add("in"));
+    document.querySelectorAll(".skill-card").forEach(fillBars);
+  };
+
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          el.classList.add("in");
+          if (el.classList.contains("skill-card")) fillBars(el);
+          if (el.classList.contains("skills-grid")) el.querySelectorAll(".skill-card").forEach(fillBars);
+          io.unobserve(el);
+        });
+      },
+      { threshold: 0.18 }
+    );
+    revealEls.forEach((el) => io.observe(el));
+    // 技能网格整体兜底（避免卡片未单独触发）
+    const skillsGrid = document.querySelector(".skills-grid");
+    if (skillsGrid) io.observe(skillsGrid);
+  } else {
+    revealAll();
+  }
 
   /* ---------- 粒子网络背景 ---------- */
   const canvas = document.getElementById("bg-canvas");
@@ -133,6 +141,8 @@
     };
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
+      const max = 130 * dpr;
+      const maxSq = max * max;
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx; p.y += p.vy;
@@ -145,9 +155,9 @@
         for (let j = i + 1; j < particles.length; j++) {
           const q = particles[j];
           const dx = p.x - q.x, dy = p.y - q.y;
-          const dist = Math.hypot(dx, dy);
-          const max = 130 * dpr;
-          if (dist < max) {
+          const distSq = dx * dx + dy * dy;
+          if (distSq < maxSq) {
+            const dist = Math.sqrt(distSq);
             ctx.beginPath();
             ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
             ctx.strokeStyle = "rgba(124,92,255," + (0.16 * (1 - dist / max)) + ")";
