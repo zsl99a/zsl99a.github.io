@@ -181,4 +181,53 @@
       else draw();
     });
   }
+
+  /* ---------- GitHub 实时统计（直连官方 API，无第三方图片依赖） ---------- */
+  function renderGitHubStats() {
+    const statsEl = document.getElementById("gh-stats");
+    const langsEl = document.getElementById("gh-langs");
+    if (!statsEl || !langsEl) return;
+    const USER = "zsl99a";
+    const esc = (s) =>
+      String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const fail = (el, msg) => { el.innerHTML = '<span class="gh-err">' + esc(msg) + "</span>"; };
+
+    Promise.all([
+      fetch("https://api.github.com/users/" + USER, { headers: { Accept: "application/vnd.github+json" } }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+      fetch("https://api.github.com/users/" + USER + "/repos?per_page=100").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+    ])
+      .then(([u, repos]) => {
+        const stars = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
+        statsEl.innerHTML =
+          '<h3>GitHub 概览</h3><div class="gh-metrics">' +
+          '<div class="gh-metric"><b>' + u.public_repos + "</b><span>公开仓库</span></div>" +
+          '<div class="gh-metric"><b>' + stars + "</b><span>累计 Star</span></div>" +
+          '<div class="gh-metric"><b>' + u.followers + "</b><span>Followers</span></div>" +
+          '<div class="gh-metric"><b>' + u.following + "</b><span>Following</span></div>" +
+          "</div>";
+
+        const counts = {};
+        repos.forEach((r) => { const l = r.language; if (l) counts[l] = (counts[l] || 0) + 1; });
+        const total = Object.values(counts).reduce((a, b) => a + b, 0);
+        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+        langsEl.innerHTML =
+          "<h3>主要语言</h3>" +
+          sorted
+            .map(([name, n]) => {
+              const pct = total ? Math.round((n / total) * 100) : 0;
+              return (
+                '<div class="gh-lang"><div class="gh-lang-top"><span class="l-name">' + esc(name) +
+                '</span><span class="l-pct">' + pct + "%</span></div>" +
+                '<div class="gh-lang-bar"><i style="width:' + pct + '%"></i></div></div>'
+              );
+            })
+            .join("");
+      })
+      .catch(() => {
+        const msg = "GitHub 数据暂不可获取（网络或 API 限流）";
+        fail(statsEl, msg);
+        fail(langsEl, msg);
+      });
+  }
+  renderGitHubStats();
 })();

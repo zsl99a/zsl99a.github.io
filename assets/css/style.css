@@ -203,9 +203,21 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 
 /* ============ GITHUB ============ */
 .github-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.gh-card{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel)}
-.gh-fallback{display:flex;align-items:center;justify-content:center;min-height:170px;padding:18px;border:1px dashed var(--accent);border-radius:var(--radius);background:rgba(54,224,200,.05);color:var(--accent);font-family:var(--mono);font-size:14px;text-align:center;transition:.3s}
-.gh-fallback:hover{background:rgba(54,224,200,.12);text-decoration:none}
+.gh-panel{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel);padding:20px 22px;min-height:170px}
+.gh-panel h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;font-family:var(--mono)}
+.gh-loading{color:var(--muted);font-family:var(--mono);font-size:13px}
+.gh-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.gh-metric{position:relative}
+.gh-metric b{display:block;font-family:var(--mono);font-size:30px;font-weight:700;color:var(--accent);line-height:1}
+.gh-metric span{display:block;color:var(--muted);font-size:12px;margin-top:6px}
+.gh-lang{margin-bottom:12px}
+.gh-lang:last-child{margin-bottom:0}
+.gh-lang-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.gh-lang-top .l-name{color:var(--text)}
+.gh-lang-top .l-pct{color:var(--muted);font-family:var(--mono)}
+.gh-lang-bar{height:8px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden}
+.gh-lang-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--accent-3));width:0;transition:width 1s ease}
+.gh-err{color:var(--muted);font-family:var(--mono);font-size:13px}
 .github-strip{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
 .github-strip a{font-family:var(--mono);font-size:13px;color:var(--muted);border:1px solid var(--border);background:var(--panel);padding:8px 14px;border-radius:999px;transition:.2s}
 .github-strip a:hover{color:var(--accent);border-color:rgba(54,224,200,.4)}
