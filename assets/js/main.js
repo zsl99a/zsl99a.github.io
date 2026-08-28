@@ -59,11 +59,11 @@
   const typedEl = document.getElementById("typed");
   const phrases = [
     "React / Vue / TypeScript 前端架构",
-    "Rust(Axum·Tokio) 高并发系统",
+    "Rust（Axum · Tokio）高并发系统",
     "微秒级高频交易系统构建者",
     "老旧系统重构 · 性能瓶颈攻坚",
-    "AI 辅助编程践行者",
-    "既懂业务，又懂底层",
+    "用 AI 提效，质量自己把关",
+    "先想清楚问题，再动手写代码",
   ];
   if (typedEl && !reduceMotion) {
     let pi = 0, ci = 0, deleting = false;
