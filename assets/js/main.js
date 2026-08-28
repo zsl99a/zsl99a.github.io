@@ -482,8 +482,19 @@
     renderActivity(events || null);
   }
 
-  /* ---------- 降级与直连：GitHub API 拉取 ---------- */
-  async function fetchFromGitHub() {
+  /* ---------- 数据获取与渲染：直连 GitHub API ---------- */
+  const CACHE_KEY = "zsl99a_gh_data";
+
+  // 1. 优先读取本地缓存，保障首屏秒开体验
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      applyData(JSON.parse(cached));
+    }
+  } catch (e) {}
+
+  // 2. 实时请求 GitHub API 获取最新数据
+  async function loadGitHubData() {
     try {
       const [u, reposRaw, eventsRaw] = await Promise.all([
         fetch("https://api.github.com/users/" + GH_USER).then((r) => (r.ok ? r.json() : null)),
@@ -555,31 +566,7 @@
     }
   }
 
-  /* ---------- 入口：优先本地缓存/静态文件，支持 API 优雅降级 ---------- */
-  const CACHE_KEY = "zsl99a_gh_data";
-  let hasRendered = false;
-  try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-      applyData(JSON.parse(cached));
-      hasRendered = true;
-    }
-  } catch (e) {}
-
-  fetch("assets/data/github.json")
-    .then((r) => {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
-    .then((data) => {
-      applyData(data);
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch (e) {}
-    })
-    .catch(() => {
-      if (!hasRendered) {
-        fetchFromGitHub();
-      }
-    });
+  loadGitHubData();
 })();
 
 /* ========================================================
