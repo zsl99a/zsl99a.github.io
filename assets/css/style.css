@@ -128,7 +128,10 @@ a:focus-visible, button:focus-visible {
   width: 620px; height: 620px; border-radius: 50%;
   pointer-events: none;
   background: radial-gradient(circle, rgba(62, 242, 207, 0.08), rgba(124, 92, 255, 0.05) 42%, transparent 66%);
-  opacity: 0; transition: opacity 0.5s;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  will-change: transform;
+  transform: translate3d(-999px, -999px, 0);
 }
 .cursor-glow.on { opacity: 1; }
 

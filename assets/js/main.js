@@ -554,22 +554,52 @@
     update();
   }
 
-  /* ---------- 光标光晕（仅精细指针设备） ---------- */
+  /* ---------- 光标光晕（仅精细指针设备，平滑灵敏跟手） ---------- */
   const glow = document.getElementById("cursor-glow");
   if (glow && finePointer && !reduceMotion) {
-    let tx = -800, ty = -800, cx = -800, cy = -800, raf = null;
-    const loop = () => {
-      cx += (tx - cx) * 0.1;
-      cy += (ty - cy) * 0.1;
-      glow.style.transform = "translate(" + (cx - 310) + "px," + (cy - 310) + "px)";
-      raf = null;
+    let tx = -999, ty = -999;
+    let cx = -999, cy = -999;
+    let running = false;
+
+    const render = () => {
+      const dx = tx - cx;
+      const dy = ty - cy;
+      cx += dx * 0.22;
+      cy += dy * 0.22;
+
+      glow.style.transform = "translate3d(" + (cx - 310) + "px," + (cy - 310) + "px,0)";
+
+      if (Math.abs(dx) > 0.2 || Math.abs(dy) > 0.2) {
+        requestAnimationFrame(render);
+      } else {
+        cx = tx;
+        cy = ty;
+        glow.style.transform = "translate3d(" + (cx - 310) + "px," + (cy - 310) + "px,0)";
+        running = false;
+      }
     };
+
     const move = (e) => {
       if (!glow.classList.contains("on")) glow.classList.add("on");
-      tx = e.clientX; ty = e.clientY;
-      if (!raf) raf = requestAnimationFrame(loop);
+      tx = e.clientX;
+      ty = e.clientY;
+      if (cx < -500) {
+        cx = tx;
+        cy = ty;
+        glow.style.transform = "translate3d(" + (cx - 310) + "px," + (cy - 310) + "px,0)";
+      }
+      if (!running) {
+        running = true;
+        requestAnimationFrame(render);
+      }
     };
+
+    const onLeave = () => {
+      glow.classList.remove("on");
+    };
+
     window.addEventListener("mousemove", move, { passive: true });
+    document.addEventListener("mouseleave", onLeave);
   }
 
   /* ---------- 3D 倾斜卡片（仅精细指针设备） ---------- */
