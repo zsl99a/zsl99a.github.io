@@ -204,6 +204,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 /* ============ GITHUB ============ */
 .github-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .gh-card{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel)}
+.gh-fallback{display:flex;align-items:center;justify-content:center;min-height:170px;padding:18px;border:1px dashed var(--accent);border-radius:var(--radius);background:rgba(54,224,200,.05);color:var(--accent);font-family:var(--mono);font-size:14px;text-align:center;transition:.3s}
+.gh-fallback:hover{background:rgba(54,224,200,.12);text-decoration:none}
 .github-strip{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
 .github-strip a{font-family:var(--mono);font-size:13px;color:var(--muted);border:1px solid var(--border);background:var(--panel);padding:8px 14px;border-radius:999px;transition:.2s}
 .github-strip a:hover{color:var(--accent);border-color:rgba(54,224,200,.4)}

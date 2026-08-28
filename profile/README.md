@@ -70,8 +70,8 @@
 ## 📊 GitHub 数据
 
 <div align="center">  
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=zsl99a\&show_icons=true\&theme=tokyonight\&hide_border=true\&count_private=false\&include_all_commits=true" alt="GitHub Stats" />  
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=zsl99a\&layout=compact\&theme=tokyonight\&hide_border=true\&langs_count=8" alt="Top Languages" />  
+  <img height="180em" src="https://github-readme-stats.demolab.com/api?username=zsl99a\&show_icons=true\&theme=tokyonight\&hide_border=true\&count_private=false\&include_all_commits=true" alt="GitHub Stats" />  
+  <img height="180em" src="https://github-readme-stats.demolab.com/api/top-langs/?username=zsl99a\&layout=compact\&theme=tokyonight\&hide_border=true\&langs_count=8" alt="Top Languages" />  
 </div>
 
 <div align="center">  
