@@ -278,7 +278,7 @@
     const loading = document.getElementById("projects-loading");
     if (!grid) return;
     if (loading) loading.remove();
-    const mine = sortMine(repos).slice(0, 8);
+    const mine = sortMine(repos).slice(0, 5);
 
     // 并行拉取各仓库语言构成（单仓库失败则回退为空条）
     Promise.all(
