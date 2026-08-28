@@ -141,7 +141,10 @@ a:focus-visible, button:focus-visible {
   background-size: 200% auto;
   animation: shine 7s linear infinite;
 }
-@keyframes shine { to { background-position: 200% center; } }
+@keyframes shine {
+  from { background-position: 200% center; }
+  to { background-position: 0% center; }
+}
 .accent { color: var(--accent); }
 .sec-line-txt { color: var(--muted); }
 
