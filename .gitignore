@@ -147,3 +147,7 @@ vite.config.ts.timestamp-*
 
 # WorkBuddy project data
 .workbuddy/
+
+# GitHub Cache Data
+assets/data/github.json
+assets/data/

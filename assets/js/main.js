@@ -473,7 +473,7 @@
         : '<span class="gh-loading">暂无公开动态</span>');
   }
 
-  /* ---------- 数据装配：统一渲染入口 ---------- */
+  /* ---------- 统一渲染入口 ---------- */
   function applyData({ user, repos, languages, events }) {
     renderProjects(repos, languages || {});
     renderProfile(user);
@@ -482,8 +482,90 @@
     renderActivity(events || null);
   }
 
-  /* ---------- 入口：纯静态缓存驱动（由 GitHub Actions 定时同步，彻底杜绝 API 限流） ---------- */
+  /* ---------- 降级与直连：GitHub API 拉取 ---------- */
+  async function fetchFromGitHub() {
+    try {
+      const [u, reposRaw, eventsRaw] = await Promise.all([
+        fetch("https://api.github.com/users/" + GH_USER).then((r) => (r.ok ? r.json() : null)),
+        fetch("https://api.github.com/users/" + GH_USER + "/repos?per_page=100&sort=updated").then((r) => (r.ok ? r.json() : [])),
+        fetch("https://api.github.com/users/" + GH_USER + "/events/public?per_page=30").then((r) => (r.ok ? r.json() : [])),
+      ]);
+
+      if (!u && (!reposRaw || !reposRaw.length)) throw new Error("API Fetch failed");
+
+      const user = u ? {
+        login: u.login,
+        avatar_url: u.avatar_url,
+        bio: u.bio,
+        location: u.location,
+        hireable: u.hireable,
+        created_at: u.created_at,
+        public_repos: u.public_repos,
+        followers: u.followers,
+        following: u.following,
+      } : {};
+
+      const repos = (reposRaw || []).map((r) => ({
+        name: r.name,
+        description: r.description,
+        fork: r.fork,
+        language: r.language,
+        stargazers_count: r.stargazers_count,
+        forks_count: r.forks_count,
+        open_issues_count: r.open_issues_count,
+        pushed_at: r.pushed_at,
+        html_url: r.html_url,
+      }));
+
+      const events = (eventsRaw || []).map((e) => ({
+        type: e.type,
+        created_at: e.created_at,
+        repo: e.repo ? e.repo.name : "",
+        payload: {
+          commits: ((e.payload && e.payload.commits) || []).slice(0, 3).map((c) => ({ message: c.message })),
+          ref_type: e.payload && e.payload.ref_type,
+          ref: e.payload && e.payload.ref,
+          action: e.payload && e.payload.action,
+          number: e.payload && e.payload.number,
+          issue: e.payload && e.payload.issue ? { number: e.payload.issue.number } : null,
+          release: e.payload && e.payload.release ? { tag_name: e.payload.release.tag_name } : null,
+        },
+      }));
+
+      const languages = {};
+      const originals = repos.filter((r) => !r.fork && r.name !== "zsl99a.github.io" && r.language).slice(0, 10);
+      await Promise.all(
+        originals.map(async (r) => {
+          try {
+            const l = await fetch("https://api.github.com/repos/" + GH_USER + "/" + r.name + "/languages").then((res) => (res.ok ? res.json() : null));
+            if (l) languages[r.name] = l;
+          } catch (err) {}
+        })
+      );
+
+      const data = { user, repos, languages, events };
+      applyData(data);
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+    } catch (e) {
+      if (!localStorage.getItem(CACHE_KEY)) {
+        document.querySelectorAll(".gh-loading").forEach((el) => {
+          el.textContent = "数据加载失败，请稍后刷新";
+        });
+      }
+    }
+  }
+
+  /* ---------- 入口：优先本地缓存/静态文件，支持 API 优雅降级 ---------- */
   const CACHE_KEY = "zsl99a_gh_data";
+  let hasRendered = false;
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      applyData(JSON.parse(cached));
+      hasRendered = true;
+    }
+  } catch (e) {}
+
   fetch("assets/data/github.json")
     .then((r) => {
       if (!r.ok) throw new Error("HTTP " + r.status);
@@ -494,16 +576,9 @@
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch (e) {}
     })
     .catch(() => {
-      try {
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
-          applyData(JSON.parse(cached));
-          return;
-        }
-      } catch (e) {}
-      document.querySelectorAll(".gh-loading").forEach((el) => {
-        el.textContent = "数据同步中，请稍后刷新";
-      });
+      if (!hasRendered) {
+        fetchFromGitHub();
+      }
     });
 })();
 
