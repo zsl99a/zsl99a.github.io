@@ -213,6 +213,7 @@
     nitrogen: "Rust 网络 / QUIC 工具库：workspace 结构（macro / quic / utils / extra），含 CI 工作流。",
     "oxygen-ui": "Leptos + Axum Rust 全栈 Web 模板：Rust 编译至 WASM 的前端工程化实践。",
     nvim: "个人 Neovim 配置：沉淀高频开发工作流与键位体系，提升日常编码效率。",
+    blender_learn: "Blender 3D 建模与渲染学习记录。",
   };
 
   // GitHub 官方语言色（与代码仓库展示一致）
@@ -277,7 +278,7 @@
     const loading = document.getElementById("projects-loading");
     if (!grid) return;
     if (loading) loading.remove();
-    const mine = sortMine(repos).slice(0, 6);
+    const mine = sortMine(repos).slice(0, 8);
 
     // 并行拉取各仓库语言构成（单仓库失败则回退为空条）
     Promise.all(
